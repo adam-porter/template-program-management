@@ -22,6 +22,7 @@ const MockDashboard = () => {
   const [showShareModal, setShowShareModal] = useState(false);
   const [registrantsData, setRegistrantsData] = useState(null); // Will be set after initialMockData is created
   const [searchQuery, setSearchQuery] = useState(''); // Search query for filtering registrants
+  const [filterValue, setFilterValue] = useState('All'); // Filter for registrant status
   
   // Mock data from screenshot - 2024-2025 Club Dues Dashboard
   const initialMockData = {
@@ -1640,7 +1641,8 @@ const MockDashboard = () => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--u-space-half, 8px)' }}>
               <TableToolbar
                 title="Registrants"
-                onFilterChange={(value) => console.log('Filter:', value)}
+                filterValue={filterValue}
+                onFilterChange={setFilterValue}
                 onSearch={(value) => setSearchQuery(value)}
                 onDownload={() => console.log('Download clicked')}
               />

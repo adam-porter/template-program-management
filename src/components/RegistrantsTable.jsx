@@ -175,6 +175,11 @@ const RegistrantsTable = ({
             color: var(--u-color-alert-foreground, #bb1700);
           }
 
+          .registrants-data-table-status.overdue {
+            background-color: var(--u-color-alert-background, #fef0ee);
+            color: var(--u-color-alert-foreground, #bb1700);
+          }
+
           .registrants-data-table-status-icon {
             width: 12px;
             height: 12px;

@@ -24,6 +24,7 @@ const RegistrationOverview = ({
   const [toastMessage, setToastMessage] = useState(null);
   const [activeTab, setActiveTab] = useState('overview');
   const [searchQuery, setSearchQuery] = useState('');
+  const [filterValue, setFilterValue] = useState('All');
 
   const handleToggleChange = () => {
     onToggleChange();
@@ -33,8 +34,54 @@ const RegistrationOverview = ({
     setToastMessage(`${registration.title} registration ${newValue ? 'opened' : 'closed'}`);
   };
 
+  // Check if a registrant has overdue payments
+  const isOverdue = (registrant) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Reset time to midnight for accurate date comparison
+    
+    return registrant.payments.some(payment => {
+      if (payment.status === 'Scheduled') {
+        const paymentDate = new Date(payment.date);
+        return paymentDate < today;
+      }
+      return false;
+    });
+  };
+
+  // Update registrant status to Overdue if they have past-due payments
+  const updateOverdueStatuses = (registrants) => {
+    return registrants.map(registrant => {
+      if (isOverdue(registrant) && registrant.status === 'Current') {
+        return { ...registrant, status: 'Overdue' };
+      }
+      return registrant;
+    });
+  };
+
+  // Filter registrants by status
+  const filterByStatus = (registrants, filter) => {
+    if (filter === 'All') {
+      return registrants;
+    }
+    
+    return registrants.filter(registrant => {
+      switch (filter) {
+        case 'Current':
+          return registrant.status === 'Current';
+        case 'Overdue':
+          return registrant.status === 'Overdue';
+        case 'Refunded':
+          return registrant.status === 'Refunded' || registrant.status === 'Partially Refunded';
+        case 'Cancelled':
+          return registrant.status === 'Cancelled';
+        default:
+          return true;
+      }
+    });
+  };
+
   // Filter registrants based on search query
-  const filterRegistrants = (registrants, query) => {
+  const filterBySearch = (registrants, query) => {
     if (!query || query.trim() === '') {
       return registrants;
     }
@@ -58,8 +105,12 @@ const RegistrationOverview = ({
     });
   };
 
-  // Apply search filter to registrants
-  const filteredRegistrants = filterRegistrants(registrants, searchQuery);
+  // Apply overdue status updates first
+  const registrantsWithOverdue = updateOverdueStatuses(registrants);
+
+  // Apply status filter, then search filter
+  const statusFiltered = filterByStatus(registrantsWithOverdue, filterValue);
+  const filteredRegistrants = filterBySearch(statusFiltered, searchQuery);
 
   // Build widgets using widgetData if provided
   const displayWidgets = widgetData ? [
@@ -164,7 +215,8 @@ const RegistrationOverview = ({
               <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--u-space-half, 8px)' }}>
                 <TableToolbar
                   title="Registrants"
-                  onFilterChange={(value) => console.log('Filter:', value)}
+                  filterValue={filterValue}
+                  onFilterChange={setFilterValue}
                   onSearch={(value) => setSearchQuery(value)}
                   onDownload={() => console.log('Download clicked')}
                 />

@@ -342,6 +342,11 @@ const RegistrantDetails = ({
             color: var(--u-color-alert-foreground, #bb1700);
           }
 
+          .registrant-details-status-badge.overdue {
+            background-color: var(--u-color-alert-background, #fef0ee);
+            color: var(--u-color-alert-foreground, #bb1700);
+          }
+
           .payment-action-menu-container {
             position: relative;
             display: flex;
