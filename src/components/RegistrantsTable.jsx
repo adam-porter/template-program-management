@@ -184,6 +184,37 @@ const RegistrantsTable = ({
             width: 12px;
             height: 12px;
           }
+
+          .registrants-data-table-empty-state {
+            padding: var(--u-space-three, 48px) var(--u-space-one, 16px);
+            text-align: center;
+            background-color: var(--u-color-background-container, #fefefe);
+            border: 1px solid var(--u-color-line-subtle, #c4c6c8);
+            border-top: none;
+          }
+
+          .registrants-data-table-empty-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto var(--u-space-one, 16px);
+            color: var(--u-color-base-foreground-subtle, #607081);
+          }
+
+          .registrants-data-table-empty-title {
+            font-family: var(--u-font-body);
+            font-size: var(--u-font-size-large, 18px);
+            font-weight: var(--u-font-weight-bold, 700);
+            color: var(--u-color-base-foreground-contrast, #071c31);
+            margin: 0 0 var(--u-space-half, 8px) 0;
+          }
+
+          .registrants-data-table-empty-description {
+            font-family: var(--u-font-body);
+            font-size: var(--u-font-size-medium, 16px);
+            font-weight: var(--u-font-weight-medium, 500);
+            color: var(--u-color-base-foreground, #36485c);
+            margin: 0;
+          }
         `}
       </style>
       <div className="registrants-data-table-container">
@@ -203,29 +234,46 @@ const RegistrantsTable = ({
             </tr>
           </thead>
           <tbody>
-            {registrants.map((registrant, index) => (
-              <tr key={index} onClick={() => onRegistrantClick(registrant)}>
-                <td className="athlete-name">{registrant.athlete}</td>
-                <td>{registrant.gender}</td>
-                <td>{registrant.primaryContact}</td>
-                <td>{registrant.registration}</td>
-                <td>{registrant.team}</td>
-                <td>{registrant.registrationDate}</td>
-                <td className="align-right">{registrant.totalPaid}</td>
-                <td className="align-right refunded-column">{registrant.refunded && registrant.refunded !== '$0.00' ? registrant.refunded : ''}</td>
-                <td className="align-right">{registrant.outstanding}</td>
-                <td>
-                  <span className={`registrants-data-table-status ${registrant.status.toLowerCase().replace(/ /g, '-')}`}>
-                    {registrant.status === 'Paid' && (
-                      <svg className="registrants-data-table-status-icon" viewBox="0 0 12 12" fill="none">
-                        <path d="M2 6L5 9L10 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    )}
-                    {registrant.status}
-                  </span>
+            {registrants.length > 0 ? (
+              registrants.map((registrant, index) => (
+                <tr key={index} onClick={() => onRegistrantClick(registrant)}>
+                  <td className="athlete-name">{registrant.athlete}</td>
+                  <td>{registrant.gender}</td>
+                  <td>{registrant.primaryContact}</td>
+                  <td>{registrant.registration}</td>
+                  <td>{registrant.team}</td>
+                  <td>{registrant.registrationDate}</td>
+                  <td className="align-right">{registrant.totalPaid}</td>
+                  <td className="align-right refunded-column">{registrant.refunded && registrant.refunded !== '$0.00' ? registrant.refunded : ''}</td>
+                  <td className="align-right">{registrant.outstanding}</td>
+                  <td>
+                    <span className={`registrants-data-table-status ${registrant.status.toLowerCase().replace(/ /g, '-')}`}>
+                      {registrant.status === 'Paid' && (
+                        <svg className="registrants-data-table-status-icon" viewBox="0 0 12 12" fill="none">
+                          <path d="M2 6L5 9L10 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      )}
+                      {registrant.status}
+                    </span>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="10" style={{ padding: 0, border: 'none' }}>
+                  <div className="registrants-data-table-empty-state">
+                    <svg className="registrants-data-table-empty-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2">
+                      <circle cx="32" cy="32" r="30" />
+                      <path d="M32 20v16M32 44v0.1" strokeLinecap="round" />
+                    </svg>
+                    <h3 className="registrants-data-table-empty-title">No registrants found</h3>
+                    <p className="registrants-data-table-empty-description">
+                      Try adjusting your filters or search to see results.
+                    </p>
+                  </div>
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
