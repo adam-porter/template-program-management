@@ -53,10 +53,10 @@ const CancelPlanModal = ({ scheduledPayments, onClose, onCancel }) => {
 
           .cancel-plan-modal-section-title {
             font-family: var(--u-font-body);
-            font-size: var(--u-font-size-medium, 16px);
-            font-weight: var(--u-font-weight-medium, 500);
+            font-size: var(--u-font-size-extra-small, 12px);
+            font-weight: var(--u-font-weight-bold, 700);
             color: var(--u-color-base-foreground, #36485c);
-            margin: 0 0 var(--u-space-three-quarter, 12px) 0;
+            margin: 0 0 var(--u-space-three-quarter, 8px) 0;
           }
 
           .cancel-plan-modal-checkboxes {
