@@ -84,6 +84,7 @@ const CancelModal = ({
             margin: 0;
           }
 
+
           .cancel-modal-description {
             font-family: var(--u-font-body);
             font-size: var(--u-font-size-medium, 16px);
@@ -195,7 +196,7 @@ const CancelModal = ({
 
           {/* Description */}
           <p className="cancel-modal-description">
-            Canceling this scheduled payment will prevent it from being processed. This action cannot be undone.
+            Canceling this scheduled payment will prevent it from being processed. <strong>This action cannot be undone.</strong>
           </p>
 
           {/* Payment Info */}
@@ -221,7 +222,7 @@ const CancelModal = ({
             </label>
             <textarea
               className="cancel-modal-textarea"
-              placeholder="Placeholder"
+              placeholder="Add a note about this cancellation..."
               value={reason}
               onChange={(e) => setReason(e.target.value)}
             />
@@ -245,6 +246,7 @@ const CancelModal = ({
               buttonType="destructive"
               size="medium"
               onClick={handleSubmit}
+              disabled={false}
             >
               Cancel Payment
             </UniformButton>

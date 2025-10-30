@@ -43,6 +43,7 @@ const CancelPlanModal = ({ scheduledPayments, onClose, onCancel }) => {
             margin: 0;
           }
 
+
           .cancel-plan-modal-description {
             font-family: var(--u-font-body);
             font-size: var(--u-font-size-medium, 16px);
@@ -158,11 +159,11 @@ const CancelPlanModal = ({ scheduledPayments, onClose, onCancel }) => {
         <div className="cancel-plan-modal-divider"></div>
 
         <p className="cancel-plan-modal-description">
-          Canceling this payment plan will prevent all selected scheduled payments from being processed. This action cannot be undone.
+          Canceling this payment plan will prevent all selected scheduled payments from being processed. <strong>This action cannot be undone.</strong>
         </p>
 
         <div>
-          <p className="cancel-plan-modal-section-title">Select the payments you'd like to cancel</p>
+          <p className="cancel-plan-modal-section-title">Cancel specific payments</p>
           <div className="cancel-plan-modal-checkboxes">
             {scheduledPayments.map((payment, index) => (
               <label key={index} className="cancel-plan-modal-checkbox-item">
@@ -173,16 +174,33 @@ const CancelPlanModal = ({ scheduledPayments, onClose, onCancel }) => {
                   onChange={() => handleCheckboxChange(index)}
                 />
                 <span className="cancel-plan-modal-checkbox-label">
-                  {payment.description} for {payment.amount}
+                  Payment {index + 1} for {payment.amount}
                 </span>
               </label>
             ))}
+            <label className="cancel-plan-modal-checkbox-item">
+              <input
+                type="checkbox"
+                className="cancel-plan-modal-checkbox"
+                checked={selectedPayments.length === scheduledPayments.length}
+                onChange={() => {
+                  if (selectedPayments.length === scheduledPayments.length) {
+                    setSelectedPayments([]);
+                  } else {
+                    setSelectedPayments(scheduledPayments.map((_, index) => index));
+                  }
+                }}
+              />
+              <span className="cancel-plan-modal-checkbox-label">
+                Cancel all upcoming payments
+              </span>
+            </label>
           </div>
         </div>
 
         <div className="cancel-plan-modal-field">
           <label className="cancel-plan-modal-label">
-            Note
+            <span>Note</span>
           </label>
           <textarea
             className="cancel-plan-modal-textarea"

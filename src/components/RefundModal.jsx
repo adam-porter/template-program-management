@@ -75,6 +75,7 @@ const RefundModal = ({
             margin: 0;
           }
 
+
           .refund-modal-description {
             font-family: var(--u-font-body);
             font-size: var(--u-font-size-medium, 16px);
@@ -272,7 +273,7 @@ const RefundModal = ({
             </UniformButton>
             <UniformButton
               buttonStyle="standard"
-              buttonType="primary"
+              buttonType="destructive"
               size="medium"
               onClick={handleSubmit}
               disabled={!amount || !!error}
