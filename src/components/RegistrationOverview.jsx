@@ -71,7 +71,10 @@ const RegistrationOverview = ({
         case 'Overdue':
           return registrant.status === 'Overdue';
         case 'Refunded':
-          return registrant.status === 'Refunded' || registrant.status === 'Partially Refunded';
+          // Show anyone with refunds > $0, regardless of status
+          // This includes Refunded, Partially Refunded, AND Cancelled registrants with refunds
+          const refundAmount = parseFloat((registrant.refunded || '$0.00').replace(/[$,]/g, ''));
+          return refundAmount > 0;
         case 'Cancelled':
           return registrant.status === 'Cancelled';
         default:
