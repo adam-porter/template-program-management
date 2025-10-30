@@ -134,7 +134,7 @@ const DataTable = ({
           </thead>
           <tbody>
             {data.map((row, index) => (
-              <tr key={index} style={{ borderBottom: '1px solid #f0f0f0' }}>
+              <tr key={index} style={{ borderBottom: '1px dashed #f0f0f0' }}>
                 {columns.map((column, colIndex) => (
                   <td key={colIndex} style={{ padding: '12px 16px' }}>
                     {column.render ? column.render(row[column.key], row) : row[column.key]}

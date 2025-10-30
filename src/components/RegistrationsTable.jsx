@@ -107,7 +107,7 @@ const RegistrationsTable = ({
           }
 
           .registrations-table tbody tr {
-            border-bottom: 1px solid var(--u-color-line-subtle, #c4c6c8);
+            border-bottom: 1px dashed var(--u-color-line-subtle, #c4c6c8) !important;
           }
 
           .registrations-table tbody tr:last-child {

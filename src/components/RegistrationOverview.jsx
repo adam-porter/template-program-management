@@ -284,7 +284,7 @@ const RegistrationOverview = ({
                       }
                       
                       .teams-table tbody tr:not(:last-child) {
-                        border-bottom: 1px solid var(--u-color-line-subtle, #c4c6c8);
+                        border-bottom: 1px dashed var(--u-color-line-subtle, #c4c6c8) !important;
                       }
                       
                       .teams-table tbody tr:hover {

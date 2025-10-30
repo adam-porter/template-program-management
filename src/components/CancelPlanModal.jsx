@@ -154,11 +154,11 @@ const CancelPlanModal = ({ scheduledPayments, onClose, onCancel }) => {
         `}
       </style>
 
-      <BaseModal title="Cancel Payment" onClose={onClose}>
+      <BaseModal title="Cancel Payment Plan" onClose={onClose}>
         <div className="cancel-plan-modal-divider"></div>
 
         <p className="cancel-plan-modal-description">
-          Canceling this scheduled payment will prevent it from being processed. This action cannot be undone.
+          Canceling this payment plan will prevent all selected scheduled payments from being processed. This action cannot be undone.
         </p>
 
         <div>
@@ -202,7 +202,7 @@ const CancelPlanModal = ({ scheduledPayments, onClose, onCancel }) => {
             size="medium"
             onClick={onClose}
           >
-            Cancel
+            Keep Plan
           </UniformButton>
           <UniformButton
             buttonStyle="standard"
@@ -211,7 +211,7 @@ const CancelPlanModal = ({ scheduledPayments, onClose, onCancel }) => {
             onClick={handleSubmit}
             disabled={isSubmitDisabled}
           >
-            Cancel
+            Cancel Plan
           </UniformButton>
         </div>
       </BaseModal>

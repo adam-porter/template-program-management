@@ -112,16 +112,13 @@ const RegistrantsTable = ({
           }
 
           .registrants-data-table tbody tr {
-            border-bottom: 1px solid var(--u-color-line-subtle, #c4c6c8);
+            border-bottom: 1px dashed var(--u-color-line-subtle, #c4c6c8);
             height: 48px;
+            cursor: pointer;
           }
 
           .registrants-data-table tbody tr:last-child {
-            border-bottom: none;
-          }
-
-          .registrants-data-table tbody tr {
-            cursor: pointer;
+            border-bottom: none !important;
           }
 
           .registrants-data-table tbody tr:hover {
@@ -200,18 +197,9 @@ const RegistrantsTable = ({
           }
 
           .registrants-data-table-empty-state {
-            padding: var(--u-space-three, 48px) var(--u-space-one, 16px);
+            padding: 64px var(--u-space-one, 16px);
             text-align: center;
             background-color: var(--u-color-background-container, #fefefe);
-            border: 1px solid var(--u-color-line-subtle, #c4c6c8);
-            border-top: none;
-          }
-
-          .registrants-data-table-empty-icon {
-            width: 64px;
-            height: 64px;
-            margin: 0 auto var(--u-space-one, 16px);
-            color: var(--u-color-base-foreground-subtle, #607081);
           }
 
           .registrants-data-table-empty-title {
@@ -276,10 +264,6 @@ const RegistrantsTable = ({
               <tr>
                 <td colSpan="10" style={{ padding: 0, border: 'none' }}>
                   <div className="registrants-data-table-empty-state">
-                    <svg className="registrants-data-table-empty-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2">
-                      <circle cx="32" cy="32" r="30" />
-                      <path d="M32 20v16M32 44v0.1" strokeLinecap="round" />
-                    </svg>
                     <h3 className="registrants-data-table-empty-title">No registrants found</h3>
                     <p className="registrants-data-table-empty-description">
                       Try adjusting your filters or search to see results.

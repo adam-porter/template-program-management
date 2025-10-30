@@ -38,7 +38,14 @@ table {
 th, td {
   text-align: left;
   padding: 12px 16px;
+}
+
+th {
   border-bottom: 1px solid #e0e0e0;
+}
+
+td {
+  border-bottom: 1px dashed #e0e0e0;
 }
 
 th {
@@ -148,7 +155,12 @@ input:focus, select:focus, textarea:focus {
   th, td {
     padding: 8px 12px;
   }
-}
+  th {
+    border-bottom: 1px solid var(--u-color-line-default, #d1d3d4);
+  }
+  td {
+    border-bottom: 1px dashed var(--u-color-line-subtle, #c4c6c8);
+  }
 
 /* Component grid */
 .component-grid {

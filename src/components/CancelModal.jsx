@@ -191,7 +191,7 @@ const CancelModal = ({
         <div className="cancel-modal" onClick={(e) => e.stopPropagation()}>
           {/* Header */}
           <div className="cancel-modal-header">
-            <div className="cancel-modal-title">Cancel Payment</div>
+            <div className="cancel-modal-title">Cancel Payment Plan</div>
             <button className="cancel-modal-close" onClick={onClose}>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -203,7 +203,7 @@ const CancelModal = ({
 
           {/* Description */}
           <p className="cancel-modal-description">
-            Canceling this scheduled payment will prevent it from being processed. This action cannot be undone.
+            Canceling this payment plan will prevent all scheduled payments from being processed. This action cannot be undone.
           </p>
 
           {/* Payment Info */}
@@ -248,7 +248,7 @@ const CancelModal = ({
               size="medium"
               onClick={onClose}
             >
-              Cancel
+              Keep Plan
             </UniformButton>
             <UniformButton
               buttonStyle="standard"
@@ -256,7 +256,7 @@ const CancelModal = ({
               size="medium"
               onClick={handleSubmit}
             >
-              Cancel
+              Cancel Plan
             </UniformButton>
           </div>
         </div>
