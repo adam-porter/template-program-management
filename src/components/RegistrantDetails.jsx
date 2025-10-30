@@ -29,6 +29,34 @@ const RegistrantDetails = ({
   const [selectedPayment, setSelectedPayment] = useState(null);
   const [paymentPlanMenuOpen, setPaymentPlanMenuOpen] = useState(false);
 
+  // Format refund amount as negative with commas (for widget display)
+  const formatRefund = (refundString) => {
+    if (!refundString || refundString === '$0.00') {
+      return '$0.00';
+    }
+    // Remove $ and parse the number
+    const amount = parseFloat(refundString.replace(/[$,]/g, ''));
+    if (amount === 0) {
+      return '$0.00';
+    }
+    // Format with comma and return as negative
+    return `-$${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  };
+
+  // Format refund for payment table (empty string for $0.00)
+  const formatPaymentRefund = (refundString) => {
+    if (!refundString || refundString === '$0.00') {
+      return '';
+    }
+    // Remove $ and parse the number
+    const amount = parseFloat(refundString.replace(/[$,]/g, ''));
+    if (amount === 0) {
+      return '';
+    }
+    // Format with comma and return as negative
+    return `-$${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  };
+
   const handleCopyEmail = () => {
     navigator.clipboard.writeText(registrant.email).then(() => {
       setEmailCopied(true);
@@ -454,7 +482,7 @@ const RegistrantDetails = ({
               rows={[
                 { label: "Total Paid to Date", value: registrant.totalPaid },
                 { label: "Outstanding", value: registrant.outstanding },
-                { label: "Refunded", value: registrant.refunded && registrant.refunded !== '$0.00' ? `-${registrant.refunded}` : registrant.refunded }
+                { label: "Refunded", value: formatRefund(registrant.refunded) }
               ]}
             />
           </div>
@@ -550,7 +578,7 @@ const RegistrantDetails = ({
                     <td>{payment.date}</td>
                     <td className="align-right">{payment.amount}</td>
                     <td className="align-right">{payment.fees}</td>
-                    <td className="align-right refunded-column">{payment.refunded && payment.refunded !== '$0.00' ? payment.refunded : ''}</td>
+                    <td className="align-right refunded-column">{formatPaymentRefund(payment.refunded)}</td>
                     <td className="align-right">{payment.transactionId}</td>
                     <td>
                       <span className={`registrant-details-status-badge ${payment.status.toLowerCase().replace(/ /g, '-')}`}>
