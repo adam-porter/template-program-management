@@ -3,34 +3,18 @@ import BaseModal from './BaseModal';
 import UniformButton from './UniformButton';
 
 const CancelPlanModal = ({ scheduledPayments, onClose, onCancel }) => {
-  const [selectedPayments, setSelectedPayments] = useState([]);
   const [note, setNote] = useState('');
 
-  const handleCheckboxChange = (paymentId) => {
-    setSelectedPayments(prev => {
-      if (prev.includes(paymentId)) {
-        return prev.filter(id => id !== paymentId);
-      } else {
-        return [...prev, paymentId];
-      }
-    });
-  };
-
   const handleSubmit = () => {
-    if (selectedPayments.length > 0) {
-      onCancel({
-        selectedPayments: scheduledPayments.filter((_, index) => selectedPayments.includes(index)),
-        note
-      });
-      onClose();
-    }
+    onCancel({
+      note
+    });
+    onClose();
   };
 
   const handleNoteChange = (e) => {
     setNote(e.target.value);
   };
-
-  const isSubmitDisabled = selectedPayments.length === 0;
 
   return (
     <>
@@ -52,36 +36,26 @@ const CancelPlanModal = ({ scheduledPayments, onClose, onCancel }) => {
             color: var(--u-color-base-foreground, #36485c);
           }
 
-          .cancel-plan-modal-section-title {
+          .cancel-plan-modal-payment-info {
+            display: flex;
+            flex-direction: column;
+            gap: var(--u-space-one, 16px);
+          }
+
+          .cancel-plan-modal-payment-field {
+            display: flex;
+            flex-direction: column;
+            gap: var(--u-space-quarter, 4px);
+          }
+
+          .cancel-plan-modal-payment-label {
             font-family: var(--u-font-body);
             font-size: var(--u-font-size-extra-small, 12px);
             font-weight: var(--u-font-weight-bold, 700);
             color: var(--u-color-base-foreground, #36485c);
-            margin: 0 0 var(--u-space-three-quarter, 8px) 0;
           }
 
-          .cancel-plan-modal-checkboxes {
-            display: flex;
-            flex-direction: column;
-            gap: var(--u-space-three-quarter, 12px);
-          }
-
-          .cancel-plan-modal-checkbox-item {
-            display: flex;
-            align-items: center;
-            gap: var(--u-space-three-quarter, 12px);
-          }
-
-          .cancel-plan-modal-checkbox {
-            width: 20px;
-            height: 20px;
-            border: 1px solid var(--u-color-line-subtle, #c4c6c8);
-            border-radius: var(--u-border-radius-small, 2px);
-            cursor: pointer;
-            flex-shrink: 0;
-          }
-
-          .cancel-plan-modal-checkbox-label {
+          .cancel-plan-modal-payment-value {
             font-family: var(--u-font-body);
             font-size: var(--u-font-size-medium, 16px);
             font-weight: var(--u-font-weight-medium, 500);
@@ -159,42 +133,22 @@ const CancelPlanModal = ({ scheduledPayments, onClose, onCancel }) => {
         <div className="cancel-plan-modal-divider"></div>
 
         <p className="cancel-plan-modal-description">
-          Canceling this payment plan will prevent all selected scheduled payments from being processed. <strong>This action cannot be undone.</strong>
+          Canceling this payment plan will prevent all scheduled payments from being processed. <strong>This action cannot be undone.</strong>
         </p>
 
-        <div>
-          <p className="cancel-plan-modal-section-title">Cancel specific payments</p>
-          <div className="cancel-plan-modal-checkboxes">
-            {scheduledPayments.map((payment, index) => (
-              <label key={index} className="cancel-plan-modal-checkbox-item">
-                <input
-                  type="checkbox"
-                  className="cancel-plan-modal-checkbox"
-                  checked={selectedPayments.includes(index)}
-                  onChange={() => handleCheckboxChange(index)}
-                />
-                <span className="cancel-plan-modal-checkbox-label">
-                  Payment {index + 1} for {payment.amount}
-                </span>
-              </label>
-            ))}
-            <label className="cancel-plan-modal-checkbox-item">
-              <input
-                type="checkbox"
-                className="cancel-plan-modal-checkbox"
-                checked={selectedPayments.length === scheduledPayments.length}
-                onChange={() => {
-                  if (selectedPayments.length === scheduledPayments.length) {
-                    setSelectedPayments([]);
-                  } else {
-                    setSelectedPayments(scheduledPayments.map((_, index) => index));
-                  }
-                }}
-              />
-              <span className="cancel-plan-modal-checkbox-label">
-                Cancel all upcoming payments
-              </span>
-            </label>
+        <div className="cancel-plan-modal-payment-info">
+          <div className="cancel-plan-modal-payment-field">
+            <div className="cancel-plan-modal-payment-label">Total Payments</div>
+            <div className="cancel-plan-modal-payment-value">{scheduledPayments.length} scheduled payments</div>
+          </div>
+          <div className="cancel-plan-modal-payment-field">
+            <div className="cancel-plan-modal-payment-label">Total Amount</div>
+            <div className="cancel-plan-modal-payment-value">
+              ${scheduledPayments.reduce((total, payment) => {
+                const amount = parseFloat(payment.amount?.replace(/[$,]/g, '') || '0');
+                return total + amount;
+              }, 0).toFixed(2)}
+            </div>
           </div>
         </div>
 
@@ -227,7 +181,6 @@ const CancelPlanModal = ({ scheduledPayments, onClose, onCancel }) => {
             buttonType="destructive"
             size="medium"
             onClick={handleSubmit}
-            disabled={isSubmitDisabled}
           >
             Cancel Plan
           </UniformButton>

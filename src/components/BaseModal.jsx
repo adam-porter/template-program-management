@@ -27,7 +27,7 @@ const BaseModal = ({ title, onClose, children, maxWidth = '520px' }) => {
             max-width: ${maxWidth};
             display: flex;
             flex-direction: column;
-            gap: var(--u-space-one-and-half, 24px);
+            gap: var(--u-space-one, 16px);
             max-height: 90vh;
             overflow-y: auto;
           }

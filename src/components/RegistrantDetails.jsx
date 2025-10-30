@@ -4,7 +4,6 @@ import DataWidget from './DataWidget';
 import UniformButton from './UniformButton';
 import TableToolbar from './TableToolbar';
 import RefundModal from './RefundModal';
-import CancelModal from './CancelModal';
 import CancelPlanModal from './CancelPlanModal';
 import { IconCopy, IconCheck, IconMore } from './UniformIcons';
 
@@ -18,13 +17,11 @@ const RegistrantDetails = ({
   onBack = () => {},
   breadcrumbText = "Programs",
   onRefund = () => {},
-  onCancel = () => {},
   onCancelPlan = () => {}
 }) => {
   const [emailCopied, setEmailCopied] = useState(false);
   const [openMenuIndex, setOpenMenuIndex] = useState(null);
   const [showRefundModal, setShowRefundModal] = useState(false);
-  const [showCancelModal, setShowCancelModal] = useState(false);
   const [showCancelPlanModal, setShowCancelPlanModal] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState(null);
   const [paymentPlanMenuOpen, setPaymentPlanMenuOpen] = useState(false);
@@ -81,15 +78,6 @@ const RegistrantDetails = ({
     onRefund(refundData);
   };
 
-  const handleCancel = (payment, index) => {
-    setSelectedPayment(payment);
-    setShowCancelModal(true);
-    setOpenMenuIndex(null);
-  };
-
-  const handleCancelSubmit = (cancelData) => {
-    onCancel(cancelData);
-  };
 
   const handleEdit = (payment, index) => {
     console.log('Edit clicked for payment:', payment);
@@ -612,21 +600,13 @@ const RegistrantDetails = ({
                                     Refund
                                   </button>
                                 ) : (
-                                  // Scheduled/future payments show Cancel and Edit
-                                  <>
-                                    <button
-                                      className="payment-action-menu-item"
-                                      onClick={() => handleCancel(payment, index)}
-                                    >
-                                      Cancel
-                                    </button>
-                                    <button
-                                      className="payment-action-menu-item"
-                                      onClick={() => handleEdit(payment, index)}
-                                    >
-                                      Edit
-                                    </button>
-                                  </>
+                                  // Scheduled/future payments show Edit only
+                                  <button
+                                    className="payment-action-menu-item"
+                                    onClick={() => handleEdit(payment, index)}
+                                  >
+                                    Edit
+                                  </button>
                                 )}
                               </div>
                             )}
@@ -661,14 +641,6 @@ const RegistrantDetails = ({
         />
       )}
 
-      {/* Cancel Modal */}
-      {showCancelModal && (
-        <CancelModal
-          payment={selectedPayment}
-          onClose={() => setShowCancelModal(false)}
-          onCancel={handleCancelSubmit}
-        />
-      )}
 
       {/* Cancel Plan Modal */}
       {showCancelPlanModal && (
