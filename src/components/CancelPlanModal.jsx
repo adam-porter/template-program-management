@@ -147,7 +147,10 @@ const CancelPlanModal = ({ scheduledPayments, onClose, onCancel }) => {
               ${scheduledPayments.reduce((total, payment) => {
                 const amount = parseFloat(payment.amount?.replace(/[$,]/g, '') || '0');
                 return total + amount;
-              }, 0).toFixed(2)}
+              }, 0).toLocaleString('en-US', { 
+                minimumFractionDigits: 2, 
+                maximumFractionDigits: 2 
+              })}
             </div>
           </div>
         </div>
