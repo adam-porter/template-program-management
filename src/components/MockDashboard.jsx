@@ -1455,8 +1455,58 @@ const MockDashboard = () => {
     setRegistrantsData(updatedRegistrants);
   };
 
+  // Check if a registrant has overdue payments
+  const isOverdue = (registrant) => {
+    if (!registrant.payments || registrant.payments.length === 0) {
+      return false;
+    }
+    
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Reset time to midnight for accurate date comparison
+    
+    return registrant.payments.some(payment => {
+      if (payment.status === 'Scheduled') {
+        const paymentDate = new Date(payment.date);
+        return paymentDate < today;
+      }
+      return false;
+    });
+  };
+
+  // Update registrant status to Overdue if they have past-due payments
+  const updateOverdueStatuses = (registrants) => {
+    return registrants.map(registrant => {
+      if (isOverdue(registrant) && registrant.status === 'Current') {
+        return { ...registrant, status: 'Overdue' };
+      }
+      return registrant;
+    });
+  };
+
+  // Filter registrants by status
+  const filterByStatus = (registrants, filter) => {
+    if (filter === 'All') {
+      return registrants;
+    }
+    
+    return registrants.filter(registrant => {
+      switch (filter) {
+        case 'Current':
+          return registrant.status === 'Current';
+        case 'Overdue':
+          return registrant.status === 'Overdue';
+        case 'Refunded':
+          return registrant.status === 'Refunded' || registrant.status === 'Partially Refunded';
+        case 'Cancelled':
+          return registrant.status === 'Cancelled';
+        default:
+          return true;
+      }
+    });
+  };
+
   // Filter registrants based on search query
-  const filterRegistrants = (registrants, query) => {
+  const filterBySearch = (registrants, query) => {
     if (!query || query.trim() === '') {
       return registrants;
     }
@@ -1480,18 +1530,22 @@ const MockDashboard = () => {
     });
   };
 
-  // Apply search filter to registrants
-  const filteredRegistrants = filterRegistrants(currentRegistrants, searchQuery);
+  // Apply overdue status updates first
+  const registrantsWithOverdue = updateOverdueStatuses(currentRegistrants);
+
+  // Apply status filter, then search filter
+  const statusFiltered = filterByStatus(registrantsWithOverdue, filterValue);
+  const fullyFilteredRegistrants = filterBySearch(statusFiltered, searchQuery);
 
   // Recalculate registration stats with filtered registrants
-  const updatedRegistrationsWithStats = calculateRegistrationStats(registrations, filteredRegistrants);
+  const updatedRegistrationsWithStats = calculateRegistrationStats(registrations, fullyFilteredRegistrants);
 
   // Use mock data with stateful registrations and filtered registrants
   const mockData = {
     ...initialMockData,
     widgets: updatedWidgets,
     registrations: updatedRegistrationsWithStats,
-    registrants: filteredRegistrants
+    registrants: fullyFilteredRegistrants
   };
 
   // If a registrant is selected, show registrant details
