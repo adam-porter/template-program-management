@@ -104,3 +104,4 @@ If you encounter CORS issues:
 2. Configure authentication if required
 3. Customize the components for your specific needs
 4. Consider building addons for more advanced integrations
+# Trigger Vercel rebuild
