@@ -95,7 +95,7 @@ const CancelModal = ({
           .cancel-modal-payment-info {
             display: flex;
             flex-direction: column;
-            gap: var(--u-space-three-quarter, 12px);
+            gap: var(--u-space-one, 16px);
           }
 
           .cancel-modal-payment-field {
@@ -106,7 +106,7 @@ const CancelModal = ({
 
           .cancel-modal-payment-label {
             font-family: var(--u-font-body);
-            font-size: var(--u-font-size-small, 14px);
+            font-size: var(--u-font-size-extra-small, 12px);
             font-weight: var(--u-font-weight-bold, 700);
             color: var(--u-color-base-foreground, #36485c);
           }
@@ -114,16 +114,8 @@ const CancelModal = ({
           .cancel-modal-payment-value {
             font-family: var(--u-font-body);
             font-size: var(--u-font-size-medium, 16px);
-            font-weight: var(--u-font-weight-regular, 400);
+            font-weight: var(--u-font-weight-medium, 500);
             color: var(--u-color-base-foreground, #36485c);
-          }
-
-          .cancel-modal-divider-dashed {
-            height: 1px;
-            background: none;
-            border-top: 1px dashed var(--u-color-line-subtle, #c4c6c8);
-            width: 100%;
-            margin: var(--u-space-half, 8px) 0;
           }
 
           .cancel-modal-field {
@@ -191,7 +183,7 @@ const CancelModal = ({
         <div className="cancel-modal" onClick={(e) => e.stopPropagation()}>
           {/* Header */}
           <div className="cancel-modal-header">
-            <div className="cancel-modal-title">Cancel Payment Plan</div>
+            <div className="cancel-modal-title">Cancel Payment</div>
             <button className="cancel-modal-close" onClick={onClose}>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -203,7 +195,7 @@ const CancelModal = ({
 
           {/* Description */}
           <p className="cancel-modal-description">
-            Canceling this payment plan will prevent all scheduled payments from being processed. This action cannot be undone.
+            Canceling this scheduled payment will prevent it from being processed. This action cannot be undone.
           </p>
 
           {/* Payment Info */}
@@ -221,8 +213,6 @@ const CancelModal = ({
               <div className="cancel-modal-payment-value">{payment?.date}</div>
             </div>
           </div>
-
-          <div className="cancel-modal-divider-dashed"></div>
 
           {/* Note Field */}
           <div className="cancel-modal-field">
@@ -248,7 +238,7 @@ const CancelModal = ({
               size="medium"
               onClick={onClose}
             >
-              Keep Plan
+              Keep Payment
             </UniformButton>
             <UniformButton
               buttonStyle="standard"
@@ -256,7 +246,7 @@ const CancelModal = ({
               size="medium"
               onClick={handleSubmit}
             >
-              Cancel Plan
+              Cancel Payment
             </UniformButton>
           </div>
         </div>
