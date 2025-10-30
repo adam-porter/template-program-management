@@ -30,13 +30,13 @@ const UniformButton = ({
       padding: children ? '0 var(--u-space-three-quarter, 12px)' : 'var(--u-space-half, 8px)',
       minHeight: '32px',
       fontSize: 'var(--u-font-size-small, 14px)',
-      iconSize: '20px',
+      iconSize: '16px',
     },
     medium: {
       padding: children ? '0 var(--u-space-one, 16px)' : 'var(--u-space-half, 8px)',
       minHeight: '40px',
       fontSize: 'var(--u-font-size-default, 16px)',
-      iconSize: '24px',
+      iconSize: '16px',
       width: children ? 'auto' : '40px',
     },
   };
