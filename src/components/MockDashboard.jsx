@@ -1308,10 +1308,19 @@ const MockDashboard = () => {
       }, 0);
       
       // Determine registrant status based on payments
+      // Priority: Cancelled > Refunded > Partially Refunded > Original Status
       const totalPaidAmount = parseFloat(registrant.totalPaid.replace(/[$,]/g, ''));
+      const listPriceAmount = parseFloat(registrant.listPrice.replace(/[$,]/g, ''));
+      const newOutstanding = parseFloat(registrant.outstanding.replace(/[$,]/g, ''));
       let registrantStatus;
       
-      if (totalRefunded >= totalPaidAmount && totalRefunded > 0) {
+      // Check if plan is cancelled (no outstanding and didn't pay full price)
+      const isCancelled = newOutstanding === 0 && totalPaidAmount < listPriceAmount;
+      
+      if (isCancelled) {
+        // Cancelled status takes priority even if they have refunds
+        registrantStatus = 'Cancelled';
+      } else if (totalRefunded >= totalPaidAmount && totalRefunded > 0) {
         registrantStatus = 'Refunded';
       } else if (totalRefunded > 0) {
         registrantStatus = 'Partially Refunded';
@@ -1361,18 +1370,20 @@ const MockDashboard = () => {
       }, 0);
       
       // Determine registrant status
+      // Priority: Cancelled > Refunded > Partially Refunded > Paid/Current
       const totalPaidAmount = parseFloat(registrant.totalPaid.replace(/[$,]/g, ''));
       const totalRefunded = parseFloat(registrant.refunded.replace(/[$,]/g, ''));
       const listPriceAmount = parseFloat(registrant.listPrice.replace(/[$,]/g, ''));
       
       let registrantStatus;
       
-      if (totalRefunded >= totalPaidAmount && totalRefunded > 0) {
+      if (newOutstanding === 0 && totalPaidAmount < listPriceAmount) {
+        // Cancelled status takes priority even if they have refunds
+        registrantStatus = 'Cancelled';
+      } else if (totalRefunded >= totalPaidAmount && totalRefunded > 0) {
         registrantStatus = 'Refunded';
       } else if (totalRefunded > 0) {
         registrantStatus = 'Partially Refunded';
-      } else if (newOutstanding === 0 && totalPaidAmount < listPriceAmount) {
-        registrantStatus = 'Cancelled';
       } else if (newOutstanding === 0 && totalPaidAmount >= listPriceAmount) {
         registrantStatus = 'Paid';
       } else {
@@ -1426,18 +1437,20 @@ const MockDashboard = () => {
       }, 0);
       
       // Determine registrant status
+      // Priority: Cancelled > Refunded > Partially Refunded > Paid/Current
       const totalPaidAmount = parseFloat(r.totalPaid.replace(/[$,]/g, ''));
       const totalRefunded = parseFloat(r.refunded.replace(/[$,]/g, ''));
       const listPriceAmount = parseFloat(r.listPrice.replace(/[$,]/g, ''));
       
       let registrantStatus;
       
-      if (totalRefunded >= totalPaidAmount && totalRefunded > 0) {
+      if (newOutstanding === 0 && totalPaidAmount < listPriceAmount) {
+        // Cancelled status takes priority even if they have refunds
+        registrantStatus = 'Cancelled';
+      } else if (totalRefunded >= totalPaidAmount && totalRefunded > 0) {
         registrantStatus = 'Refunded';
       } else if (totalRefunded > 0) {
         registrantStatus = 'Partially Refunded';
-      } else if (newOutstanding === 0 && totalPaidAmount < listPriceAmount) {
-        registrantStatus = 'Cancelled';
       } else if (newOutstanding === 0 && totalPaidAmount >= listPriceAmount) {
         registrantStatus = 'Paid';
       } else {
@@ -1540,10 +1553,10 @@ const MockDashboard = () => {
   const statusFiltered = filterByStatus(registrantsWithOverdue, filterValue);
   const fullyFilteredRegistrants = filterBySearch(statusFiltered, searchQuery);
 
-  // Recalculate registration stats with filtered registrants
-  const updatedRegistrationsWithStats = calculateRegistrationStats(registrations, fullyFilteredRegistrants);
+  // Recalculate registration stats from full dataset (do not apply table filters)
+  const updatedRegistrationsWithStats = calculateRegistrationStats(registrations, currentRegistrants);
 
-  // Use mock data with stateful registrations and filtered registrants
+  // Use mock data with stateful registrations and filtered registrants (filters only affect the registrants table)
   const mockData = {
     ...initialMockData,
     widgets: updatedWidgets,
@@ -1586,8 +1599,10 @@ const MockDashboard = () => {
     // Find the current state of this registration
     const currentRegistration = registrations.find(r => r.title === selectedRegistration.title);
     
-    // Calculate widget data for this specific registration
-    const registrationRegistrants = mockData.registrants.filter(r => r.registration === selectedRegistration.title);
+    // Calculate widget data for this specific registration (do not use table filters)
+    // Preserve overdue status but ignore search/filter applied to registrants table
+    const baseRegistrants = registrantsWithOverdue;
+    const registrationRegistrants = baseRegistrants.filter(r => r.registration === selectedRegistration.title);
     const registrationWidgetData = calculateWidgetData(registrationRegistrants);
     
     return (
