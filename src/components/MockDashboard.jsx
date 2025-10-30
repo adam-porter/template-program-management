@@ -21,6 +21,7 @@ const MockDashboard = () => {
   const [previousTab, setPreviousTab] = useState('overview'); // Track which tab was active before navigating
   const [showShareModal, setShowShareModal] = useState(false);
   const [registrantsData, setRegistrantsData] = useState(null); // Will be set after initialMockData is created
+  const [searchQuery, setSearchQuery] = useState(''); // Search query for filtering registrants
   
   // Mock data from screenshot - 2024-2025 Club Dues Dashboard
   const initialMockData = {
@@ -1453,15 +1454,43 @@ const MockDashboard = () => {
     setRegistrantsData(updatedRegistrants);
   };
 
-  // Recalculate registration stats with current registrants
-  const updatedRegistrationsWithStats = calculateRegistrationStats(registrations, currentRegistrants);
+  // Filter registrants based on search query
+  const filterRegistrants = (registrants, query) => {
+    if (!query || query.trim() === '') {
+      return registrants;
+    }
+    
+    const lowerQuery = query.toLowerCase().trim();
+    
+    return registrants.filter(registrant => {
+      // Split athlete name into parts (first name, last name)
+      const athleteParts = registrant.athlete.toLowerCase().split(' ');
+      
+      // Split primary contact name into parts (first name, last name)
+      const contactParts = registrant.primaryContact.toLowerCase().split(' ');
+      
+      // Check if any part of athlete name matches
+      const athleteMatch = athleteParts.some(part => part.includes(lowerQuery));
+      
+      // Check if any part of primary contact name matches
+      const contactMatch = contactParts.some(part => part.includes(lowerQuery));
+      
+      return athleteMatch || contactMatch;
+    });
+  };
 
-  // Use mock data with stateful registrations and registrants
+  // Apply search filter to registrants
+  const filteredRegistrants = filterRegistrants(currentRegistrants, searchQuery);
+
+  // Recalculate registration stats with filtered registrants
+  const updatedRegistrationsWithStats = calculateRegistrationStats(registrations, filteredRegistrants);
+
+  // Use mock data with stateful registrations and filtered registrants
   const mockData = {
     ...initialMockData,
     widgets: updatedWidgets,
     registrations: updatedRegistrationsWithStats,
-    registrants: currentRegistrants
+    registrants: filteredRegistrants
   };
 
   // If a registrant is selected, show registrant details
@@ -1612,7 +1641,7 @@ const MockDashboard = () => {
               <TableToolbar
                 title="Registrants"
                 onFilterChange={(value) => console.log('Filter:', value)}
-                onSearch={(value) => console.log('Search:', value)}
+                onSearch={(value) => setSearchQuery(value)}
                 onDownload={() => console.log('Download clicked')}
               />
               <RegistrantsTable 

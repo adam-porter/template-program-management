@@ -23,6 +23,7 @@ const RegistrationOverview = ({
 }) => {
   const [toastMessage, setToastMessage] = useState(null);
   const [activeTab, setActiveTab] = useState('overview');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleToggleChange = () => {
     onToggleChange();
@@ -31,6 +32,34 @@ const RegistrationOverview = ({
     const newValue = !registration.enabled;
     setToastMessage(`${registration.title} registration ${newValue ? 'opened' : 'closed'}`);
   };
+
+  // Filter registrants based on search query
+  const filterRegistrants = (registrants, query) => {
+    if (!query || query.trim() === '') {
+      return registrants;
+    }
+    
+    const lowerQuery = query.toLowerCase().trim();
+    
+    return registrants.filter(registrant => {
+      // Split athlete name into parts (first name, last name)
+      const athleteParts = registrant.athlete.toLowerCase().split(' ');
+      
+      // Split primary contact name into parts (first name, last name)
+      const contactParts = registrant.primaryContact.toLowerCase().split(' ');
+      
+      // Check if any part of athlete name matches
+      const athleteMatch = athleteParts.some(part => part.includes(lowerQuery));
+      
+      // Check if any part of primary contact name matches
+      const contactMatch = contactParts.some(part => part.includes(lowerQuery));
+      
+      return athleteMatch || contactMatch;
+    });
+  };
+
+  // Apply search filter to registrants
+  const filteredRegistrants = filterRegistrants(registrants, searchQuery);
 
   // Build widgets using widgetData if provided
   const displayWidgets = widgetData ? [
@@ -136,11 +165,11 @@ const RegistrationOverview = ({
                 <TableToolbar
                   title="Registrants"
                   onFilterChange={(value) => console.log('Filter:', value)}
-                  onSearch={(value) => console.log('Search:', value)}
+                  onSearch={(value) => setSearchQuery(value)}
                   onDownload={() => console.log('Download clicked')}
                 />
                 <RegistrantsTable 
-                  registrants={registrants}
+                  registrants={filteredRegistrants}
                   onRegistrantClick={onRegistrantClickFromHere || onRegistrantClick}
                 />
               </div>
