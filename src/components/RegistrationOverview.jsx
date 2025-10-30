@@ -126,7 +126,7 @@ const RegistrationOverview = ({
       rows: [
         { label: "Overdue", value: "0", hasButton: false, showCopyButton: false },
         { label: "Overdue Amount", value: "$0.00", hasButton: false, showCopyButton: false },
-        { label: "Paused", value: "0", hasButton: false, showCopyButton: false }
+        { label: "Cancelled", value: registrantsWithOverdue.filter(r => r.status === 'Cancelled').length.toString(), hasButton: false, showCopyButton: false }
       ]
     },
     {

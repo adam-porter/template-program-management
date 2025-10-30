@@ -36,7 +36,7 @@ const MockDashboard = () => {
         rows: [
           { label: "Overdue", value: "0", hasButton: false, showCopyButton: false },
           { label: "Overdue Amount", value: "$0.00", hasButton: false, showCopyButton: false },
-          { label: "Paused", value: "0", hasButton: false, showCopyButton: false }
+          { label: "Cancelled", value: "0", hasButton: false, showCopyButton: false }
         ]
       },
       {
@@ -1195,6 +1195,13 @@ const MockDashboard = () => {
   // State for registrations that can be toggled
   const [registrations, setRegistrations] = useState(registrationsWithStats);
 
+  // Initialize registrants data on component mount
+  React.useEffect(() => {
+    if (registrantsData === null) {
+      setRegistrantsData(initialMockData.registrants);
+    }
+  }, []);
+
   // Check if any registration is enabled - this determines the master toggle state
   const hasOpenRegistrations = registrations.some(reg => reg.enabled);
 
@@ -1238,12 +1245,29 @@ const MockDashboard = () => {
 
   // Calculate widget totals from current registrants (for program overview)
   const programWidgetData = calculateWidgetData(currentRegistrants);
+  
+  // Debug logging
+  console.log('Program overview - currentRegistrants length:', currentRegistrants.length);
+  console.log('Program overview - cancelled count:', currentRegistrants.filter(r => r.status === 'Cancelled').length);
 
   const updatedWidgets = initialMockData.widgets.map(widget => {
     if (widget.label === "Registrants") {
+      // Calculate cancelled registrants count for "Cancelled" row
+      const cancelledCount = currentRegistrants.filter(registrant => registrant.status === 'Cancelled').length;
+      console.log('Registrants widget - cancelled count:', cancelledCount);
+      
       return {
         ...widget,
-        value: programWidgetData.count.toString()
+        value: programWidgetData.count.toString(),
+        rows: widget.rows.map(row => {
+          if (row.label === "Cancelled") {
+            return {
+              ...row,
+              value: cancelledCount.toString()
+            };
+          }
+          return row;
+        })
       };
     }
     if (widget.label === "Total Fees") {
