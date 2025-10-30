@@ -162,6 +162,7 @@ input:focus, select:focus, textarea:focus {
   td {
     border-bottom: 1px dashed var(--u-color-line-subtle, #c4c6c8);
   }
+}
 
 /* Component grid */
 .component-grid {
