@@ -7,6 +7,7 @@ const CancelPlanModal = ({ scheduledPayments, onClose, onCancel }) => {
 
   const handleSubmit = () => {
     onCancel({
+      selectedPayments: scheduledPayments, // Cancel all scheduled payments
       note
     });
     onClose();
@@ -133,7 +134,7 @@ const CancelPlanModal = ({ scheduledPayments, onClose, onCancel }) => {
         <div className="cancel-plan-modal-divider"></div>
 
         <p className="cancel-plan-modal-description">
-          Canceling this payment plan will prevent all scheduled payments from being processed. <strong>This action cannot be undone.</strong>
+          Canceling this payment plan will prevent all {scheduledPayments.length} scheduled payments from being processed. <strong>This action cannot be undone.</strong>
         </p>
 
         <div className="cancel-plan-modal-payment-info">
