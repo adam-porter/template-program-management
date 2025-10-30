@@ -1,0 +1,8 @@
+/* Import Uniform Web Storybook Design System */
+@import url('https://static.hudl.com/microservice-assets/frontends/uniform/fonts/barlow.css');
+@import url('https://uniform-web.storybook.hudltools.com/assets/iframe-CGWtub3J.css');
+
+/* Override any conflicting styles if needed */
+body {
+  font-family: var(--u-font-body);
+}
