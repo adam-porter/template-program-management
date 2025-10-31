@@ -5,6 +5,7 @@ import UniformButton from './UniformButton';
 import TableToolbar from './TableToolbar';
 import RefundModal from './RefundModal';
 import CancelPlanModal from './CancelPlanModal';
+import EditPaymentModal from './EditPaymentModal';
 import { IconCopy, IconCheck, IconMore } from './UniformIcons';
 
 /**
@@ -17,12 +18,14 @@ const RegistrantDetails = ({
   onBack = () => {},
   breadcrumbText = "Programs",
   onRefund = () => {},
-  onCancelPlan = () => {}
+  onCancelPlan = () => {},
+  onEditPayment = () => {}
 }) => {
   const [emailCopied, setEmailCopied] = useState(false);
   const [openMenuIndex, setOpenMenuIndex] = useState(null);
   const [showRefundModal, setShowRefundModal] = useState(false);
   const [showCancelPlanModal, setShowCancelPlanModal] = useState(false);
+  const [showEditPaymentModal, setShowEditPaymentModal] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState(null);
   const [paymentPlanMenuOpen, setPaymentPlanMenuOpen] = useState(false);
 
@@ -80,8 +83,13 @@ const RegistrantDetails = ({
 
 
   const handleEdit = (payment, index) => {
-    console.log('Edit clicked for payment:', payment);
+    setSelectedPayment(payment);
+    setShowEditPaymentModal(true);
     setOpenMenuIndex(null);
+  };
+
+  const handleEditSubmit = (updateData) => {
+    onEditPayment(updateData);
   };
 
   const handlePaymentPlanMenuToggle = () => {
@@ -203,12 +211,14 @@ const RegistrantDetails = ({
           .registrant-details-table-container {
             width: 100%;
             background-color: var(--u-color-background-container, #fefefe);
+            overflow: visible;
           }
 
           .registrant-details-table {
             width: 100%;
             border-collapse: collapse;
             font-family: var(--u-font-body);
+            overflow: visible;
           }
 
           .registrant-details-table th:nth-child(1),
@@ -306,6 +316,10 @@ const RegistrantDetails = ({
           }
 
           .registrant-details-table td:last-child {
+            overflow: visible;
+          }
+
+          .registrant-details-table td:nth-child(2) {
             overflow: visible;
           }
 
@@ -409,6 +423,52 @@ const RegistrantDetails = ({
 
           .registrant-details-table tbody td:last-child {
             text-align: right;
+          }
+
+          .payment-date-tooltip-container {
+            position: relative;
+            display: inline-block;
+            overflow: visible;
+          }
+
+          .payment-date-tooltip-container:hover .payment-date-tooltip {
+            visibility: visible;
+            opacity: 1;
+          }
+
+          .payment-date-tooltip {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-bottom: 8px;
+            padding: 8px 12px;
+            background-color: var(--u-color-base-foreground-contrast, #071c31);
+            color: var(--u-color-emphasis-foreground-reversed, #fefefe);
+            font-family: var(--u-font-body);
+            font-size: var(--u-font-size-micro, 12px);
+            font-weight: var(--u-font-weight-medium, 500);
+            line-height: 1.4;
+            border-radius: var(--u-border-radius-small, 2px);
+            white-space: normal;
+            max-width: 320px;
+            min-width: 200px;
+            text-align: left;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            z-index: 1500;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+          }
+
+          .payment-date-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 4px solid transparent;
+            border-top-color: var(--u-color-base-foreground-contrast, #071c31);
           }
 
           @media (max-width: 767px) {
@@ -563,7 +623,27 @@ const RegistrantDetails = ({
                 {registrant.payments.map((payment, index) => (
                   <tr key={index}>
                     <td className="description-col">{payment.description}</td>
-                    <td>{payment.date}</td>
+                    <td>
+                      {payment.isModified && payment.originalDate ? (
+                        <div className="payment-date-tooltip-container">
+                          <span 
+                            style={{ 
+                              cursor: 'help',
+                              textDecoration: 'underline',
+                              textDecorationStyle: 'dotted',
+                              textUnderlineOffset: '2px'
+                            }}
+                          >
+                            {payment.date}
+                          </span>
+                          <div className="payment-date-tooltip">
+                            Originally scheduled for {payment.originalDate}
+                          </div>
+                        </div>
+                      ) : (
+                        <span>{payment.date}</span>
+                      )}
+                    </td>
                     <td className="align-right">{payment.amount}</td>
                     <td className="align-right">{payment.fees}</td>
                     <td className="align-right refunded-column">{formatPaymentRefund(payment.refunded)}</td>
@@ -648,6 +728,15 @@ const RegistrantDetails = ({
           scheduledPayments={scheduledPayments}
           onClose={() => setShowCancelPlanModal(false)}
           onCancel={handleCancelPlanSubmit}
+        />
+      )}
+
+      {/* Edit Payment Modal */}
+      {showEditPaymentModal && selectedPayment && (
+        <EditPaymentModal
+          payment={selectedPayment}
+          onClose={() => setShowEditPaymentModal(false)}
+          onUpdate={handleEditSubmit}
         />
       )}
     </>

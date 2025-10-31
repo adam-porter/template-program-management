@@ -1492,6 +1492,41 @@ const MockDashboard = () => {
     setRegistrantsData(updatedRegistrants);
   };
 
+  // Edit Payment handler - updates the scheduled date of a payment
+  const handleEditPayment = ({ payment, date, originalDate, note }) => {
+    // Update registrants data to change the payment date
+    const updatedRegistrants = currentRegistrants.map(registrant => {
+      // Find if this registrant has the payment
+      const paymentIndex = registrant.payments.findIndex(p => 
+        p.description === payment.description && 
+        p.date === originalDate && 
+        p.transactionId === payment.transactionId &&
+        p.status === 'Scheduled'
+      );
+      
+      if (paymentIndex === -1) return registrant;
+      
+      // Update the payment date and store modification metadata
+      const updatedPayments = [...registrant.payments];
+      const currentPayment = updatedPayments[paymentIndex];
+      updatedPayments[paymentIndex] = {
+        ...currentPayment,
+        date: date,
+        originalDate: originalDate, // Store original date for reference
+        modifiedDate: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }), // When it was modified
+        modifiedNote: note || undefined, // Store the note if provided
+        isModified: true // Flag to indicate this payment was modified
+      };
+      
+      return {
+        ...registrant,
+        payments: updatedPayments
+      };
+    });
+    
+    setRegistrantsData(updatedRegistrants);
+  };
+
   // Check if a registrant has overdue payments
   const isOverdue = (registrant) => {
     if (!registrant.payments || registrant.payments.length === 0) {
@@ -1614,6 +1649,7 @@ const MockDashboard = () => {
         onRefund={handleRefund}
         onCancel={handleCancel}
         onCancelPlan={handleCancelPlan}
+        onEditPayment={handleEditPayment}
       />
     );
   }
