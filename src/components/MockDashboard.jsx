@@ -1280,7 +1280,7 @@ const MockDashboard = () => {
         rows: [
           { label: "Total Paid to Date", value: `$${programWidgetData.totalPaid.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, hasButton: false, showCopyButton: false },
           { label: "Outstanding", value: `$${programWidgetData.totalOutstanding.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, hasButton: false, showCopyButton: false },
-          { label: "Refunded", value: `-$${programWidgetData.totalRefunded.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, hasButton: false, showCopyButton: false }
+          { label: "Refunded", value: programWidgetData.totalRefunded > 0 ? `-$${programWidgetData.totalRefunded.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : `$${programWidgetData.totalRefunded.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, hasButton: false, showCopyButton: false }
         ]
       };
     }
