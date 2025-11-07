@@ -10,7 +10,7 @@ const RegistrationsTable = ({
   onToggleRegistration = () => {},
   onRegistrationClick = () => {}
 }) => {
-  // Format refund amount as negative with commas
+  // Format refund amount as positive with commas
   const formatRefund = (refundString) => {
     if (!refundString || refundString === '$0.00') {
       return '';
@@ -20,8 +20,8 @@ const RegistrationsTable = ({
     if (amount === 0) {
       return '';
     }
-    // Format with comma and return as negative
-    return `-$${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    // Format with comma and return as positive
+    return `$${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   };
 
   return (
@@ -176,7 +176,7 @@ const RegistrationsTable = ({
             <tr>
               <th>Registration Title</th>
               <th className="align-right">Registrants</th>
-              <th className="align-right">Total Fees</th>
+              <th className="align-right">Paid to Date</th>
               <th className="align-right">Refunded</th>
               <th className="align-right">Outstanding</th>
               <th className="align-right">List Price</th>

@@ -63,20 +63,21 @@ const RegistrationOverview = ({
     if (filter === 'All') {
       return registrants;
     }
-    
+
     return registrants.filter(registrant => {
       switch (filter) {
         case 'Current':
           return registrant.status === 'Current';
         case 'Overdue':
           return registrant.status === 'Overdue';
+        case 'Completed':
+          return registrant.status === 'Paid';
         case 'Refunded':
           // Show anyone with refunds > $0, regardless of status
-          // This includes Refunded, Partially Refunded, AND Cancelled registrants with refunds
           const refundAmount = parseFloat((registrant.refunded || '$0.00').replace(/[$,]/g, ''));
           return refundAmount > 0;
-        case 'Cancelled':
-          return registrant.status === 'Cancelled';
+        case 'Canceled':
+          return registrant.paymentPlanStatus === 'Canceled';
         default:
           return true;
       }
@@ -115,6 +116,13 @@ const RegistrationOverview = ({
   const statusFiltered = filterByStatus(registrantsWithOverdue, filterValue);
   const filteredRegistrants = filterBySearch(statusFiltered, searchQuery);
 
+  // Sort by registration date (newest to oldest)
+  const sortedRegistrants = [...filteredRegistrants].sort((a, b) => {
+    const dateA = new Date(a.registrationDate);
+    const dateB = new Date(b.registrationDate);
+    return dateB - dateA; // Reverse chronological order (newest first)
+  });
+
   // Build widgets using widgetData if provided
   const displayWidgets = widgetData ? [
     {
@@ -123,23 +131,25 @@ const RegistrationOverview = ({
       size: "medium",
       avatar: null,
       subheader: null,
+      labelTooltip: "Total number of registered athletes",
       rows: [
         { label: "Overdue", value: "0", hasButton: false, showCopyButton: false },
         { label: "Overdue Amount", value: "$0.00", hasButton: false, showCopyButton: false },
-        { label: "Cancelled", value: registrantsWithOverdue.filter(r => r.status === 'Cancelled').length.toString(), hasButton: false, showCopyButton: false }
+        { label: "Canceled", value: registrantsWithOverdue.filter(r => r.status === 'Canceled').length.toString(), hasButton: false, showCopyButton: false }
       ]
     },
     {
-      label: "Total Fees",
-      // Net balance = Total Paid to Date - Refunded
-      value: `$${(widgetData.totalPaid - widgetData.totalRefunded).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+      label: "Total Registration Value",
+      // Gross value = Total Paid to Date + Outstanding
+      value: `$${(widgetData.totalPaid + widgetData.totalOutstanding).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
       size: "medium",
       avatar: null,
       subheader: null,
+      labelTooltip: "Sum of paid to date and outstanding",
       rows: [
-        { label: "Total Paid to Date", value: `$${widgetData.totalPaid.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, hasButton: false, showCopyButton: false },
+        { label: "Paid to Date", value: `$${widgetData.totalPaid.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, hasButton: false, showCopyButton: false },
         { label: "Outstanding", value: `$${widgetData.totalOutstanding.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, hasButton: false, showCopyButton: false },
-        { label: "Refunded", value: widgetData.totalRefunded > 0 ? `-$${widgetData.totalRefunded.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : `$${widgetData.totalRefunded.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, hasButton: false, showCopyButton: false }
+        { label: "Refunded", value: `$${widgetData.totalRefunded.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, hasButton: false, showCopyButton: false }
       ]
     }
   ] : widgets;
@@ -177,7 +187,7 @@ const RegistrationOverview = ({
       <div style={{ fontFamily: 'Arial, sans-serif', backgroundColor: 'white', minHeight: '100vh' }}>
         <main className="registration-overview-main">
           {/* Page Header */}
-          <PageHeader 
+          <PageHeader
             title={registration.title}
             subtitle={registration.subtitle}
             showBreadcrumbs={true}
@@ -187,6 +197,7 @@ const RegistrationOverview = ({
             onTabChange={setActiveTab}
             showToggle={true}
             showShare={false}
+            showMore={true}
             breadcrumbText={breadcrumbText}
             toggleLabel="Open Registration"
             toggleTooltip="Open/Close this registration"
@@ -210,6 +221,7 @@ const RegistrationOverview = ({
                     avatar={widget.avatar}
                     subheader={widget.subheader}
                     rows={widget.rows}
+                    labelTooltip={widget.labelTooltip}
                   />
                 ))}
               </div>
@@ -223,9 +235,10 @@ const RegistrationOverview = ({
                   onSearch={(value) => setSearchQuery(value)}
                   onDownload={() => console.log('Download clicked')}
                 />
-                <RegistrantsTable 
-                  registrants={filteredRegistrants}
+                <RegistrantsTable
+                  registrants={sortedRegistrants}
                   onRegistrantClick={onRegistrantClickFromHere || onRegistrantClick}
+                  hideRegistrationColumn={true}
                 />
               </div>
             </>

@@ -33,10 +33,11 @@ const MockDashboard = () => {
         size: "medium",
         avatar: null,
         subheader: null,
+        labelTooltip: "Total number of registered athletes",
         rows: [
           { label: "Overdue", value: "0", hasButton: false, showCopyButton: false },
           { label: "Overdue Amount", value: "$0.00", hasButton: false, showCopyButton: false },
-          { label: "Cancelled", value: "0", hasButton: false, showCopyButton: false }
+          { label: "Canceled", value: "0", hasButton: false, showCopyButton: false }
         ]
       },
       {
@@ -45,6 +46,7 @@ const MockDashboard = () => {
         size: "medium",
         avatar: null,
         subheader: null,
+        labelTooltip: "Sum of paid to date and outstanding",
         rows: [
           { label: "Total Paid to Date", value: "$0.00", hasButton: false, showCopyButton: false },
           { label: "Outstanding", value: "$0.00", hasButton: false, showCopyButton: false },
@@ -414,6 +416,7 @@ const MockDashboard = () => {
         refunded: '$0.00',
         outstanding: '$1,249.00',
         status: 'Current',
+        paymentPlanStatus: 'Active',
         payments: [
           { description: 'Deposit', date: 'Oct 5, 2025', amount: '$250.00', fees: '$0.00', refunded: '', transactionId: 'TXN-1001', status: 'Paid' },
           { description: 'Installment 1 of 4', date: 'Jan 10, 2026', amount: '$312.25', fees: '', refunded: '', transactionId: '', status: 'Scheduled' },
@@ -439,6 +442,7 @@ const MockDashboard = () => {
         refunded: '$0.00',
         outstanding: '$1,249.00',
         status: 'Current',
+        paymentPlanStatus: 'Active',
         payments: [
           { description: 'Deposit', date: 'Oct 8, 2025', amount: '$250.00', fees: '$0.00', refunded: '', transactionId: 'TXN-1002', status: 'Paid' },
           { description: 'Installment 1 of 4', date: 'Jan 10, 2026', amount: '$312.25', fees: '', refunded: '', transactionId: '', status: 'Scheduled' },
@@ -464,6 +468,7 @@ const MockDashboard = () => {
         refunded: '$0.00',
         outstanding: '$0.00',
         status: 'Paid',
+        paymentPlanStatus: 'Active',
         payments: [
           { description: 'Full Payment', date: 'Oct 12, 2025', amount: '$1,499.00', fees: '$0.00', refunded: '', transactionId: 'TXN-1007', status: 'Paid' }
         ]
@@ -486,6 +491,7 @@ const MockDashboard = () => {
         refunded: '$0.00',
         outstanding: '$1,249.00',
         status: 'Current',
+        paymentPlanStatus: 'Active',
         payments: [
           { description: 'Deposit', date: 'Oct 6, 2025', amount: '$250.00', fees: '$0.00', refunded: '', transactionId: 'TXN-1008', status: 'Paid' },
           { description: 'Installment 1 of 4', date: 'Jan 10, 2026', amount: '$312.25', fees: '', refunded: '', transactionId: '', status: 'Scheduled' },
@@ -511,6 +517,7 @@ const MockDashboard = () => {
         refunded: '$0.00',
         outstanding: '$1,249.00',
         status: 'Current',
+        paymentPlanStatus: 'Active',
         payments: [
           { description: 'Deposit', date: 'Oct 10, 2025', amount: '$250.00', fees: '$0.00', refunded: '', transactionId: 'TXN-1009', status: 'Paid' },
           { description: 'Installment 1 of 4', date: 'Jan 10, 2026', amount: '$312.25', fees: '', refunded: '', transactionId: '', status: 'Scheduled' },
@@ -537,6 +544,7 @@ const MockDashboard = () => {
         refunded: '$0.00',
         outstanding: '$1,249.00',
         status: 'Current',
+        paymentPlanStatus: 'Active',
         payments: [
           { description: 'Deposit', date: 'Oct 7, 2025', amount: '$250.00', fees: '$0.00', refunded: '', transactionId: 'TXN-1014', status: 'Paid' },
           { description: 'Installment 1 of 4', date: 'Jan 10, 2026', amount: '$312.25', fees: '', refunded: '', transactionId: '', status: 'Scheduled' },
@@ -562,6 +570,7 @@ const MockDashboard = () => {
         refunded: '$0.00',
         outstanding: '$1,249.00',
         status: 'Current',
+        paymentPlanStatus: 'Active',
         payments: [
           { description: 'Deposit', date: 'Oct 11, 2025', amount: '$250.00', fees: '$0.00', refunded: '', transactionId: 'TXN-1015', status: 'Paid' },
           { description: 'Installment 1 of 4', date: 'Jan 10, 2026', amount: '$312.25', fees: '', refunded: '', transactionId: '', status: 'Scheduled' },
@@ -588,6 +597,7 @@ const MockDashboard = () => {
         refunded: '$0.00',
         outstanding: '$1,249.00',
         status: 'Current',
+        paymentPlanStatus: 'Active',
         payments: [
           { description: 'Deposit', date: 'Oct 9, 2025', amount: '$250.00', fees: '$0.00', refunded: '', transactionId: 'TXN-1020', status: 'Paid' },
           { description: 'Installment 1 of 4', date: 'Jan 10, 2026', amount: '$312.25', fees: '', refunded: '', transactionId: '', status: 'Scheduled' },
@@ -614,6 +624,7 @@ const MockDashboard = () => {
         refunded: '$0.00',
         outstanding: '$1,249.00',
         status: 'Current',
+        paymentPlanStatus: 'Active',
         payments: [
           { description: 'Deposit', date: 'Oct 13, 2025', amount: '$250.00', fees: '$0.00', refunded: '', transactionId: 'TXN-1021', status: 'Paid' },
           { description: 'Installment 1 of 4', date: 'Jan 10, 2026', amount: '$312.25', fees: '', refunded: '', transactionId: '', status: 'Scheduled' },
@@ -639,6 +650,7 @@ const MockDashboard = () => {
         refunded: '$0.00',
         outstanding: '$1,249.00',
         status: 'Current',
+        paymentPlanStatus: 'Active',
         payments: [
           { description: 'Deposit', date: 'Oct 14, 2025', amount: '$250.00', fees: '$0.00', refunded: '', transactionId: 'TXN-1026', status: 'Paid' },
           { description: 'Installment 1 of 4', date: 'Jan 10, 2026', amount: '$312.25', fees: '', refunded: '', transactionId: '', status: 'Scheduled' },
@@ -665,6 +677,7 @@ const MockDashboard = () => {
         refunded: '$0.00',
         outstanding: '$1,249.00',
         status: 'Current',
+        paymentPlanStatus: 'Active',
         payments: [
           { description: 'Deposit', date: 'Oct 16, 2025', amount: '$250.00', fees: '$0.00', refunded: '', transactionId: 'TXN-1027', status: 'Paid' },
           { description: 'Installment 1 of 4', date: 'Jan 10, 2026', amount: '$312.25', fees: '', refunded: '', transactionId: '', status: 'Scheduled' },
@@ -691,6 +704,7 @@ const MockDashboard = () => {
         refunded: '$0.00',
         outstanding: '$1,249.00',
         status: 'Current',
+        paymentPlanStatus: 'Active',
         payments: [
           { description: 'Deposit', date: 'Oct 17, 2025', amount: '$250.00', fees: '$0.00', refunded: '', transactionId: 'TXN-1032', status: 'Paid' },
           { description: 'Installment 1 of 4', date: 'Jan 10, 2026', amount: '$312.25', fees: '', refunded: '', transactionId: '', status: 'Scheduled' },
@@ -716,6 +730,7 @@ const MockDashboard = () => {
         refunded: '$0.00',
         outstanding: '$1,249.00',
         status: 'Current',
+        paymentPlanStatus: 'Active',
         payments: [
           { description: 'Deposit', date: 'Oct 18, 2025', amount: '$250.00', fees: '$0.00', refunded: '', transactionId: 'TXN-1033', status: 'Paid' },
           { description: 'Installment 1 of 4', date: 'Jan 10, 2026', amount: '$312.25', fees: '', refunded: '', transactionId: '', status: 'Scheduled' },
@@ -742,6 +757,7 @@ const MockDashboard = () => {
         refunded: '$0.00',
         outstanding: '$0.00',
         status: 'Paid',
+        paymentPlanStatus: 'Active',
         payments: [
           { description: 'Full Payment', date: 'Oct 19, 2025', amount: '$1,499.00', fees: '$0.00', refunded: '', transactionId: 'TXN-1038', status: 'Paid' }
         ]
@@ -764,6 +780,7 @@ const MockDashboard = () => {
         refunded: '$0.00',
         outstanding: '$1,249.00',
         status: 'Current',
+        paymentPlanStatus: 'Active',
         payments: [
           { description: 'Deposit', date: 'Oct 20, 2025', amount: '$250.00', fees: '$0.00', refunded: '', transactionId: 'TXN-1039', status: 'Paid' },
           { description: 'Installment 1 of 4', date: 'Jan 10, 2026', amount: '$312.25', fees: '', refunded: '', transactionId: '', status: 'Scheduled' },
@@ -789,6 +806,7 @@ const MockDashboard = () => {
         refunded: '$0.00',
         outstanding: '$0.00',
         status: 'Paid',
+        paymentPlanStatus: 'Active',
         payments: [
           { description: 'Full Payment', date: 'Oct 21, 2025', amount: '$1,499.00', fees: '$0.00', refunded: '', transactionId: 'TXN-1044', status: 'Paid' }
         ]
@@ -811,6 +829,7 @@ const MockDashboard = () => {
         refunded: '$0.00',
         outstanding: '$0.00',
         status: 'Paid',
+        paymentPlanStatus: 'Active',
         payments: [
           { description: 'Full Payment', date: 'Oct 22, 2025', amount: '$1,499.00', fees: '$0.00', refunded: '', transactionId: 'TXN-1045', status: 'Paid' }
         ]
@@ -833,6 +852,7 @@ const MockDashboard = () => {
         refunded: '$0.00',
         outstanding: '$1,249.00',
         status: 'Current',
+        paymentPlanStatus: 'Active',
         payments: [
           { description: 'Deposit', date: 'Oct 23, 2025', amount: '$250.00', fees: '$0.00', refunded: '', transactionId: 'TXN-1046', status: 'Paid' },
           { description: 'Installment 1 of 4', date: 'Jan 10, 2026', amount: '$312.25', fees: '', refunded: '', transactionId: '', status: 'Scheduled' },
@@ -859,6 +879,7 @@ const MockDashboard = () => {
         refunded: '$0.00',
         outstanding: '$1,249.00',
         status: 'Current',
+        paymentPlanStatus: 'Active',
         payments: [
           { description: 'Deposit', date: 'Oct 9, 2025', amount: '$250.00', fees: '$0.00', refunded: '', transactionId: 'TXN-1051', status: 'Paid' },
           { description: 'Installment 1 of 4', date: 'Jan 10, 2026', amount: '$312.25', fees: '', refunded: '', transactionId: '', status: 'Scheduled' },
@@ -884,6 +905,7 @@ const MockDashboard = () => {
         refunded: '$0.00',
         outstanding: '$0.00',
         status: 'Paid',
+        paymentPlanStatus: 'Active',
         payments: [
           { description: 'Full Payment', date: 'Oct 11, 2025', amount: '$1,499.00', fees: '$0.00', refunded: '', transactionId: 'TXN-1056', status: 'Paid' }
         ]
@@ -906,6 +928,7 @@ const MockDashboard = () => {
         refunded: '$0.00',
         outstanding: '$1,249.00',
         status: 'Current',
+        paymentPlanStatus: 'Active',
         payments: [
           { description: 'Deposit', date: 'Oct 12, 2025', amount: '$250.00', fees: '$0.00', refunded: '', transactionId: 'TXN-1057', status: 'Paid' },
           { description: 'Installment 1 of 4', date: 'Jan 10, 2026', amount: '$312.25', fees: '', refunded: '', transactionId: '', status: 'Scheduled' },
@@ -931,6 +954,7 @@ const MockDashboard = () => {
         refunded: '$0.00',
         outstanding: '$0.00',
         status: 'Paid',
+        paymentPlanStatus: 'Active',
         payments: [
           { description: 'Full Payment', date: 'Oct 13, 2025', amount: '$1,499.00', fees: '$0.00', refunded: '', transactionId: 'TXN-1062', status: 'Paid' }
         ]
@@ -953,6 +977,7 @@ const MockDashboard = () => {
         refunded: '$0.00',
         outstanding: '$1,249.00',
         status: 'Current',
+        paymentPlanStatus: 'Active',
         payments: [
           { description: 'Deposit', date: 'Oct 14, 2025', amount: '$250.00', fees: '$0.00', refunded: '', transactionId: 'TXN-1063', status: 'Paid' },
           { description: 'Installment 1 of 4', date: 'Jan 10, 2026', amount: '$312.25', fees: '', refunded: '', transactionId: '', status: 'Scheduled' },
@@ -978,6 +1003,7 @@ const MockDashboard = () => {
         refunded: '$0.00',
         outstanding: '$0.00',
         status: 'Paid',
+        paymentPlanStatus: 'Active',
         payments: [
           { description: 'Full Payment', date: 'Oct 15, 2025', amount: '$1,499.00', fees: '$0.00', refunded: '', transactionId: 'TXN-1068', status: 'Paid' }
         ]
@@ -1000,6 +1026,7 @@ const MockDashboard = () => {
         refunded: '$0.00',
         outstanding: '$0.00',
         status: 'Paid',
+        paymentPlanStatus: 'Active',
         payments: [
           { description: 'Full Payment', date: 'Oct 16, 2025', amount: '$1,499.00', fees: '$0.00', refunded: '', transactionId: 'TXN-1069', status: 'Paid' }
         ]
@@ -1021,6 +1048,7 @@ const MockDashboard = () => {
         refunded: '$0.00',
         outstanding: '$1,249.00',
         status: 'Current',
+        paymentPlanStatus: 'Active',
         payments: [
           { description: 'Deposit', date: 'Oct 17, 2025', amount: '$250.00', fees: '$0.00', refunded: '', transactionId: 'TXN-1070', status: 'Paid' },
           { description: 'Installment 1 of 4', date: 'Jan 10, 2026', amount: '$312.25', fees: '', refunded: '', transactionId: '', status: 'Scheduled' },
@@ -1047,6 +1075,7 @@ const MockDashboard = () => {
         refunded: '$0.00',
         outstanding: '$1,249.00',
         status: 'Current',
+        paymentPlanStatus: 'Active',
         payments: [
           { description: 'Deposit', date: 'Oct 18, 2025', amount: '$250.00', fees: '$0.00', refunded: '', transactionId: 'TXN-1075', status: 'Paid' },
           { description: 'Installment 1 of 4', date: 'Jan 10, 2026', amount: '$312.25', fees: '', refunded: '', transactionId: '', status: 'Scheduled' },
@@ -1072,6 +1101,7 @@ const MockDashboard = () => {
         refunded: '$0.00',
         outstanding: '$0.00',
         status: 'Paid',
+        paymentPlanStatus: 'Active',
         payments: [
           { description: 'Full Payment', date: 'Oct 19, 2025', amount: '$1,499.00', fees: '$0.00', refunded: '', transactionId: 'TXN-1080', status: 'Paid' }
         ]
@@ -1094,6 +1124,7 @@ const MockDashboard = () => {
         refunded: '$0.00',
         outstanding: '$0.00',
         status: 'Paid',
+        paymentPlanStatus: 'Active',
         payments: [
           { description: 'Full Payment', date: 'Oct 20, 2025', amount: '$1,499.00', fees: '$0.00', refunded: '', transactionId: 'TXN-1081', status: 'Paid' }
         ]
@@ -1115,6 +1146,7 @@ const MockDashboard = () => {
         refunded: '$0.00',
         outstanding: '$1,249.00',
         status: 'Current',
+        paymentPlanStatus: 'Active',
         payments: [
           { description: 'Deposit', date: 'Oct 21, 2025', amount: '$250.00', fees: '$0.00', refunded: '', transactionId: 'TXN-1082', status: 'Paid' },
           { description: 'Installment 1 of 4', date: 'Jan 10, 2026', amount: '$312.25', fees: '', refunded: '', transactionId: '', status: 'Scheduled' },
@@ -1144,13 +1176,11 @@ const MockDashboard = () => {
         return sum + amount;
       }, 0);
       
-      // Net balance = Total Paid to Date - Refunded
-      const netBalance = totalPaid - totalRefunded;
-      
+      // Gross total paid (refunds shown separately)
       return {
         ...reg,
         count,
-        totalCollected: `$${netBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+        totalCollected: `$${totalPaid.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
         refunded: `$${totalRefunded.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
         outstanding: `$${totalOutstanding.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
         capacity: {
@@ -1248,19 +1278,19 @@ const MockDashboard = () => {
   
   // Debug logging
   console.log('Program overview - currentRegistrants length:', currentRegistrants.length);
-  console.log('Program overview - cancelled count:', currentRegistrants.filter(r => r.status === 'Cancelled').length);
+  console.log('Program overview - cancelled count:', currentRegistrants.filter(r => r.status === 'Canceled').length);
 
   const updatedWidgets = initialMockData.widgets.map(widget => {
     if (widget.label === "Registrants") {
-      // Calculate cancelled registrants count for "Cancelled" row
-      const cancelledCount = currentRegistrants.filter(registrant => registrant.status === 'Cancelled').length;
+      // Calculate cancelled registrants count for "Canceled" row
+      const cancelledCount = currentRegistrants.filter(registrant => registrant.status === 'Canceled').length;
       console.log('Registrants widget - cancelled count:', cancelledCount);
       
       return {
         ...widget,
         value: programWidgetData.count.toString(),
         rows: widget.rows.map(row => {
-          if (row.label === "Cancelled") {
+          if (row.label === "Canceled") {
             return {
               ...row,
               value: cancelledCount.toString()
@@ -1271,16 +1301,17 @@ const MockDashboard = () => {
       };
     }
     if (widget.label === "Total Fees") {
-      // Net balance = Total Paid to Date - Refunded
-      const netBalance = programWidgetData.totalPaid - programWidgetData.totalRefunded;
-      
+      // Gross value = Total Paid to Date + Outstanding
+      const grossValue = programWidgetData.totalPaid + programWidgetData.totalOutstanding;
+
       return {
         ...widget,
-        value: `$${netBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+        label: "Total Program Value",
+        value: `$${grossValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
         rows: [
-          { label: "Total Paid to Date", value: `$${programWidgetData.totalPaid.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, hasButton: false, showCopyButton: false },
+          { label: "Paid to Date", value: `$${programWidgetData.totalPaid.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, hasButton: false, showCopyButton: false },
           { label: "Outstanding", value: `$${programWidgetData.totalOutstanding.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, hasButton: false, showCopyButton: false },
-          { label: "Refunded", value: programWidgetData.totalRefunded > 0 ? `-$${programWidgetData.totalRefunded.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : `$${programWidgetData.totalRefunded.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, hasButton: false, showCopyButton: false }
+          { label: "Refunded", value: `$${programWidgetData.totalRefunded.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, hasButton: false, showCopyButton: false }
         ]
       };
     }
@@ -1331,32 +1362,31 @@ const MockDashboard = () => {
         return sum + refunded;
       }, 0);
       
-      // Determine registrant status based on payments
-      // Priority: Cancelled > Refunded > Partially Refunded > Original Status
+      // Determine registrant status based on outstanding balance (not refund status)
+      // Account status is about what they owe, refunds are shown separately
+      const newOutstanding = parseFloat(registrant.outstanding.replace(/[$,]/g, ''));
       const totalPaidAmount = parseFloat(registrant.totalPaid.replace(/[$,]/g, ''));
       const listPriceAmount = parseFloat(registrant.listPrice.replace(/[$,]/g, ''));
-      const newOutstanding = parseFloat(registrant.outstanding.replace(/[$,]/g, ''));
       let registrantStatus;
-      
-      // Check if plan is cancelled (no outstanding and didn't pay full price)
-      const isCancelled = newOutstanding === 0 && totalPaidAmount < listPriceAmount;
-      
-      if (isCancelled) {
-        // Cancelled status takes priority even if they have refunds
-        registrantStatus = 'Cancelled';
-      } else if (totalRefunded >= totalPaidAmount && totalRefunded > 0) {
-        registrantStatus = 'Refunded';
-      } else if (totalRefunded > 0) {
-        registrantStatus = 'Partially Refunded';
+
+      // Account status is based on outstanding balance
+      if (newOutstanding === 0) {
+        // If they owe nothing, they're paid (whether by full payment or plan cancellation)
+        registrantStatus = 'Paid';
+      } else if (registrant.status === 'Overdue') {
+        // Preserve overdue status if it was already set
+        registrantStatus = 'Overdue';
       } else {
-        registrantStatus = registrant.status;
+        // Otherwise they're current
+        registrantStatus = 'Current';
       }
       
       return {
         ...registrant,
         payments: updatedPayments,
         refunded: `$${totalRefunded.toFixed(2)}`,
-        status: registrantStatus
+        status: registrantStatus,
+        paymentPlanStatus: registrant.paymentPlanStatus
       };
     });
     
@@ -1377,11 +1407,11 @@ const MockDashboard = () => {
       
       if (paymentIndex === -1) return registrant;
       
-      // Update the payment status to Cancelled
+      // Update the payment status to Canceled
       const updatedPayments = [...registrant.payments];
       updatedPayments[paymentIndex] = {
         ...updatedPayments[paymentIndex],
-        status: 'Cancelled'
+        status: 'Canceled'
       };
       
       // Recalculate outstanding: sum of scheduled payments only (exclude cancelled and paid)
@@ -1394,7 +1424,7 @@ const MockDashboard = () => {
       }, 0);
       
       // Determine registrant status
-      // Priority: Cancelled > Refunded > Partially Refunded > Paid/Current
+      // Priority: Canceled > Refunded > Partially Refunded > Paid/Current
       const totalPaidAmount = parseFloat(registrant.totalPaid.replace(/[$,]/g, ''));
       const totalRefunded = parseFloat(registrant.refunded.replace(/[$,]/g, ''));
       const listPriceAmount = parseFloat(registrant.listPrice.replace(/[$,]/g, ''));
@@ -1402,8 +1432,8 @@ const MockDashboard = () => {
       let registrantStatus;
       
       if (newOutstanding === 0 && totalPaidAmount < listPriceAmount) {
-        // Cancelled status takes priority even if they have refunds
-        registrantStatus = 'Cancelled';
+        // Canceled status takes priority even if they have refunds
+        registrantStatus = 'Canceled';
       } else if (totalRefunded >= totalPaidAmount && totalRefunded > 0) {
         registrantStatus = 'Refunded';
       } else if (totalRefunded > 0) {
@@ -1434,7 +1464,7 @@ const MockDashboard = () => {
         return r;
       }
       
-      // Mark only the selected scheduled payments as Cancelled
+      // Mark only the selected scheduled payments as Canceled
       const updatedPayments = r.payments.map(payment => {
         const isSelected = scheduledPayments.some(sp => 
           sp.description === payment.description && 
@@ -1445,7 +1475,7 @@ const MockDashboard = () => {
         if (isSelected && payment.status === 'Scheduled') {
           return {
             ...payment,
-            status: 'Cancelled'
+            status: 'Canceled'
           };
         }
         return payment;
@@ -1461,22 +1491,19 @@ const MockDashboard = () => {
       }, 0);
       
       // Determine registrant status
-      // Priority: Cancelled > Refunded > Partially Refunded > Paid/Current
+      // Account status is based on what they owe, not plan status
       const totalPaidAmount = parseFloat(r.totalPaid.replace(/[$,]/g, ''));
       const totalRefunded = parseFloat(r.refunded.replace(/[$,]/g, ''));
-      const listPriceAmount = parseFloat(r.listPrice.replace(/[$,]/g, ''));
-      
+
       let registrantStatus;
-      
-      if (newOutstanding === 0 && totalPaidAmount < listPriceAmount) {
-        // Cancelled status takes priority even if they have refunds
-        registrantStatus = 'Cancelled';
+
+      // If outstanding is 0, account is completed (whether by full payment or plan cancellation)
+      if (newOutstanding === 0) {
+        registrantStatus = 'Paid';
       } else if (totalRefunded >= totalPaidAmount && totalRefunded > 0) {
         registrantStatus = 'Refunded';
       } else if (totalRefunded > 0) {
         registrantStatus = 'Partially Refunded';
-      } else if (newOutstanding === 0 && totalPaidAmount >= listPriceAmount) {
-        registrantStatus = 'Paid';
       } else {
         registrantStatus = 'Current';
       }
@@ -1485,7 +1512,8 @@ const MockDashboard = () => {
         ...r,
         payments: updatedPayments,
         outstanding: `$${newOutstanding.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-        status: registrantStatus
+        status: registrantStatus,
+        paymentPlanStatus: 'Canceled'
       };
     });
     
@@ -1560,20 +1588,21 @@ const MockDashboard = () => {
     if (filter === 'All') {
       return registrants;
     }
-    
+
     return registrants.filter(registrant => {
       switch (filter) {
         case 'Current':
           return registrant.status === 'Current';
         case 'Overdue':
           return registrant.status === 'Overdue';
+        case 'Completed':
+          return registrant.status === 'Paid';
         case 'Refunded':
           // Show anyone with refunds > $0, regardless of status
-          // This includes Refunded, Partially Refunded, AND Cancelled registrants with refunds
           const refundAmount = parseFloat((registrant.refunded || '$0.00').replace(/[$,]/g, ''));
           return refundAmount > 0;
-        case 'Cancelled':
-          return registrant.status === 'Cancelled';
+        case 'Canceled':
+          return registrant.paymentPlanStatus === 'Canceled';
         default:
           return true;
       }
@@ -1612,6 +1641,13 @@ const MockDashboard = () => {
   const statusFiltered = filterByStatus(registrantsWithOverdue, filterValue);
   const fullyFilteredRegistrants = filterBySearch(statusFiltered, searchQuery);
 
+  // Sort by registration date (newest to oldest)
+  const sortedRegistrants = [...fullyFilteredRegistrants].sort((a, b) => {
+    const dateA = new Date(a.registrationDate);
+    const dateB = new Date(b.registrationDate);
+    return dateB - dateA; // Reverse chronological order (newest first)
+  });
+
   // Recalculate registration stats from full dataset (do not apply table filters)
   const updatedRegistrationsWithStats = calculateRegistrationStats(registrations, currentRegistrants);
 
@@ -1620,7 +1656,7 @@ const MockDashboard = () => {
     ...initialMockData,
     widgets: updatedWidgets,
     registrations: updatedRegistrationsWithStats,
-    registrants: fullyFilteredRegistrants
+    registrants: sortedRegistrants
   };
 
   // If a registrant is selected, show registrant details
@@ -1761,6 +1797,7 @@ const MockDashboard = () => {
               avatar={widget.avatar}
               subheader={widget.subheader}
               rows={widget.rows}
+              labelTooltip={widget.labelTooltip}
               onRowButtonClick={(rowIndex, row) => {
                 console.log(`${widget.label} - Row ${rowIndex}:`, row.label, row.value);
                 alert(`Clicked: ${widget.label} > ${row.label} (${row.value})`);

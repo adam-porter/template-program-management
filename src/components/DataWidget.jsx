@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import UniformButton from './UniformButton';
-import { IconCopy, IconCheck } from './UniformIcons';
+import { IconCopy, IconCheck, IconInformation } from './UniformIcons';
 
 /**
  * DataWidget Component - Overview data widget based on Figma design
@@ -14,7 +14,8 @@ const DataWidget = ({
   avatar = null, // URL to avatar image
   subheader = null, // Subheader text (can include bullet separator)
   rows = [],
-  onRowButtonClick = () => {}
+  onRowButtonClick = () => {},
+  labelTooltip = null // Optional tooltip text to display next to label
 }) => {
   const [copiedRowIndex, setCopiedRowIndex] = useState(null);
 
@@ -79,6 +80,12 @@ const DataWidget = ({
             min-width: 0;
           }
 
+          .data-widget-label-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+          }
+
           .data-widget-label {
             font-family: var(--u-font-body);
             font-weight: var(--u-font-weight-bold, 700);
@@ -87,7 +94,54 @@ const DataWidget = ({
             letter-spacing: var(--u-letter-spacing-default, 0px);
             line-height: 1.2;
             margin: 0;
-            width: 100%;
+          }
+
+          .data-widget-tooltip-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: help;
+            width: 16px;
+            height: 16px;
+            color: var(--u-color-base-foreground, #36485c);
+            flex-shrink: 0;
+            position: relative;
+          }
+
+          .data-widget-tooltip-icon:hover .data-widget-tooltip {
+            visibility: visible;
+            opacity: 1;
+          }
+
+          .data-widget-tooltip {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-bottom: 8px;
+            padding: 8px 12px;
+            background-color: var(--u-color-base-foreground-contrast, #071c31);
+            color: var(--u-color-emphasis-foreground-reversed, #fefefe);
+            font-family: var(--u-font-body);
+            font-size: var(--u-font-size-micro, 12px);
+            font-weight: var(--u-font-weight-medium, 500);
+            line-height: 1.4;
+            border-radius: var(--u-border-radius-small, 2px);
+            white-space: nowrap;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            z-index: 1000;
+          }
+
+          .data-widget-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 4px solid transparent;
+            border-top-color: var(--u-color-base-foreground-contrast, #071c31);
           }
 
           .data-widget-detail {
@@ -201,7 +255,17 @@ const DataWidget = ({
       </style>
       <div className="data-widget">
         {/* Card Label */}
-        <p className="data-widget-label">{label}</p>
+        <div className="data-widget-label-container">
+          <p className="data-widget-label">{label}</p>
+          {labelTooltip && (
+            <div className="data-widget-tooltip-icon">
+              <IconInformation />
+              <div className="data-widget-tooltip">
+                {labelTooltip}
+              </div>
+            </div>
+          )}
+        </div>
 
         {/* Detail Section */}
         <div className="data-widget-detail">

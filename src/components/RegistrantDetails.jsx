@@ -53,8 +53,8 @@ const RegistrantDetails = ({
     if (amount === 0) {
       return '';
     }
-    // Format with comma and return as negative
-    return `-$${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    // Format with comma and return as positive
+    return `$${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   };
 
   const handleCopyEmail = () => {
@@ -109,7 +109,7 @@ const RegistrantDetails = ({
   // Calculate payment plan details
   const scheduledPayments = registrant.payments.filter(p => p.status === 'Scheduled');
   const hasActivePaymentPlan = registrant.paymentPlan !== 'Full Payment' && scheduledPayments.length > 0;
-  const paymentPlanStatus = scheduledPayments.length > 0 ? 'Active' : 'Cancelled';
+  const paymentPlanStatus = scheduledPayments.length > 0 ? 'Active' : 'Canceled';
   
   let nextPayment = null;
   if (scheduledPayments.length > 0) {
@@ -199,11 +199,11 @@ const RegistrantDetails = ({
           }
 
           .payment-plan-status-badge.active {
-            background-color: var(--u-color-background-positive-subtle, #ebf5ff);
-            color: var(--u-color-emphasis-background-contrast, #0273e3);
+            background-color: rgba(167, 174, 181, 0.2);
+            color: var(--u-color-base-foreground, #36485c);
           }
 
-          .payment-plan-status-badge.cancelled {
+          .payment-plan-status-badge.canceled {
             background-color: var(--u-color-alert-background, #fef0ee);
             color: var(--u-color-alert-foreground, #bb1700);
           }
@@ -367,7 +367,7 @@ const RegistrantDetails = ({
             color: var(--u-color-alert-foreground, #bb1700);
           }
 
-          .registrant-details-status-badge.cancelled {
+          .registrant-details-status-badge.canceled {
             background-color: var(--u-color-alert-background, #fef0ee);
             color: var(--u-color-alert-foreground, #bb1700);
           }
@@ -494,7 +494,6 @@ const RegistrantDetails = ({
             showToggle={false}
             showShare={false}
             breadcrumbText={breadcrumbText}
-            onMore={() => console.log('More clicked')}
             onBack={onBack}
           />
 
@@ -517,20 +516,21 @@ const RegistrantDetails = ({
             />
             
             <DataWidget
-              label="Total Fees"
+              label="Total Registrant Value"
               value={(() => {
-                // Calculate net balance: Total Paid to Date - Refunded
+                // Calculate gross value: Total Paid to Date + Outstanding
                 const totalPaid = parseFloat(registrant.totalPaid.replace(/[$,]/g, ''));
-                const refunded = parseFloat(registrant.refunded.replace(/[$,]/g, ''));
-                const netBalance = totalPaid - refunded;
-                return `$${netBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                const outstanding = parseFloat(registrant.outstanding.replace(/[$,]/g, ''));
+                const grossValue = totalPaid + outstanding;
+                return `$${grossValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
               })()}
               size="small"
               subheader={`List Price: ${registrant.listPrice}`}
+              labelTooltip="Sum of paid to date and outstanding"
               rows={[
-                { label: "Total Paid to Date", value: registrant.totalPaid },
+                { label: "Paid to Date", value: registrant.totalPaid },
                 { label: "Outstanding", value: registrant.outstanding },
-                { label: "Refunded", value: formatRefund(registrant.refunded) }
+                { label: "Refunded", value: registrant.refunded }
               ]}
             />
           </div>
@@ -558,7 +558,7 @@ const RegistrantDetails = ({
                   </thead>
                   <tbody>
                     <tr>
-                      <td className="payment-plan-col">Deposit + {scheduledPayments.length > 0 ? scheduledPayments.length : registrant.payments.filter(p => p.status === 'Cancelled').length} Installments</td>
+                      <td className="payment-plan-col">Deposit + {scheduledPayments.length > 0 ? scheduledPayments.length : registrant.payments.filter(p => p.status === 'Canceled').length} Installments</td>
                       <td>{nextPayment || '—'}</td>
                       <td>Monthly</td>
                       <td>
@@ -612,9 +612,7 @@ const RegistrantDetails = ({
                   <th>Description</th>
                   <th>Date</th>
                   <th className="align-right">Amount</th>
-                  <th className="align-right">Fees</th>
                   <th className="align-right">Refunded</th>
-                  <th className="align-right">Transaction ID</th>
                   <th>Status</th>
                   <th></th>
                 </tr>
@@ -645,9 +643,7 @@ const RegistrantDetails = ({
                       )}
                     </td>
                     <td className="align-right">{payment.amount}</td>
-                    <td className="align-right">{payment.fees}</td>
                     <td className="align-right refunded-column">{formatPaymentRefund(payment.refunded)}</td>
-                    <td className="align-right">{payment.transactionId}</td>
                     <td>
                       <span className={`registrant-details-status-badge ${payment.status.toLowerCase().replace(/ /g, '-')}`}>
                         {payment.status === 'Paid' && (
@@ -660,7 +656,7 @@ const RegistrantDetails = ({
                     </td>
                     <td>
                       <div className="payment-action-menu-container">
-                        {payment.status !== 'Refunded' && payment.status !== 'Cancelled' ? (
+                        {payment.status !== 'Refunded' && payment.status !== 'Canceled' ? (
                           <>
                             <UniformButton
                               buttonStyle="ghost"

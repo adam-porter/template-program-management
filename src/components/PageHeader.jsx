@@ -7,7 +7,7 @@ import { IconArrowLeft, IconInformation, IconShare, IconMore, IconLock } from '.
  * Uses Uniform Web Storybook design tokens and Barlow font
  * Responsive design with mobile, tablet, and desktop breakpoints
  */
-const PageHeader = ({ 
+const PageHeader = ({
   title = "2024-2025 Club Dues",
   subtitle = "Team Dues · Jan 15, 2025 - Jul 15, 2025",
   showBreadcrumbs = true,
@@ -15,6 +15,7 @@ const PageHeader = ({
   tabs = ['overview', 'registrations'],
   showToggle = true,
   showShare = true,
+  showMore = false,
   shareDisabled = false,
   isPrivate = false,
   breadcrumbText = "Programs",
@@ -433,13 +434,15 @@ const PageHeader = ({
                 )}
 
                 {/* More Actions Button */}
-                <UniformButton
-                  buttonStyle="standard"
-                  buttonType="subtle"
-                  size="medium"
-                  icon={<IconMore />}
-                  onClick={onMore}
-                />
+                {showMore && (
+                  <UniformButton
+                    buttonStyle="standard"
+                    buttonType="subtle"
+                    size="medium"
+                    icon={<IconMore />}
+                    onClick={onMore}
+                  />
+                )}
               </div>
               </div>
             </div>
@@ -637,13 +640,15 @@ const PageHeader = ({
             )}
 
             {/* More Actions Button */}
-            <UniformButton
-              buttonStyle="standard"
-              buttonType="subtle"
-              size="medium"
-              icon={<IconMore />}
-              onClick={onMore}
-            />
+            {showMore && (
+              <UniformButton
+                buttonStyle="standard"
+                buttonType="subtle"
+                size="medium"
+                icon={<IconMore />}
+                onClick={onMore}
+              />
+            )}
             </div>
           </div>
         </div>

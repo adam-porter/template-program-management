@@ -6,9 +6,10 @@ import React from 'react';
  */
 const RegistrantsTable = ({
   registrants = [],
-  onRegistrantClick = () => {}
+  onRegistrantClick = () => {},
+  hideRegistrationColumn = false
 }) => {
-  // Format refund amount as negative with commas
+  // Format refund amount as positive with commas
   const formatRefund = (refundString) => {
     if (!refundString || refundString === '$0.00') {
       return '';
@@ -18,8 +19,37 @@ const RegistrantsTable = ({
     if (amount === 0) {
       return '';
     }
-    // Format with comma and return as negative
-    return `-$${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    // Format with comma and return as positive
+    return `$${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  };
+
+  // Map status to account status display
+  const getAccountStatus = (status) => {
+    switch (status) {
+      case 'Paid':
+        return 'Completed';
+      case 'Current':
+        return 'Current';
+      case 'Overdue':
+        return 'Overdue';
+      default:
+        // Hide: Refunded, Partially Refunded, Canceled
+        return null;
+    }
+  };
+
+  // Get CSS class for status (only for displayable statuses)
+  const getStatusClass = (status) => {
+    switch (status) {
+      case 'Paid':
+        return 'completed';
+      case 'Current':
+        return 'current';
+      case 'Overdue':
+        return 'overdue';
+      default:
+        return '';
+    }
   };
 
   return (
@@ -40,38 +70,38 @@ const RegistrantsTable = ({
 
           .registrants-data-table th:nth-child(1),
           .registrants-data-table td:nth-child(1) {
-            width: 20%;
+            width: 18%;
           }
 
           .registrants-data-table th:nth-child(2),
           .registrants-data-table td:nth-child(2) {
-            width: 6%;
+            width: 8%;
           }
 
           .registrants-data-table th:nth-child(3),
-          .registrants-data-table td:nth-child(3),
-          .registrants-data-table th:nth-child(4),
-          .registrants-data-table td:nth-child(4) {
-            width: 11%;
+          .registrants-data-table td:nth-child(3) {
+            width: 6%;
           }
 
+          .registrants-data-table th:nth-child(4),
+          .registrants-data-table td:nth-child(4),
           .registrants-data-table th:nth-child(5),
           .registrants-data-table td:nth-child(5) {
-            width: 9%;
+            width: 10%;
           }
 
           .registrants-data-table th:nth-child(6),
           .registrants-data-table td:nth-child(6) {
-            width: 7%;
-          }
-
-          .registrants-data-table th:nth-child(7),
-          .registrants-data-table td:nth-child(7),
-          .registrants-data-table th:nth-child(8),
-          .registrants-data-table td:nth-child(8) {
             width: 8%;
           }
 
+          .registrants-data-table th:nth-child(7),
+          .registrants-data-table td:nth-child(7) {
+            width: 8%;
+          }
+
+          .registrants-data-table th:nth-child(8),
+          .registrants-data-table td:nth-child(8),
           .registrants-data-table th:nth-child(9),
           .registrants-data-table td:nth-child(9) {
             width: 7%;
@@ -79,7 +109,12 @@ const RegistrantsTable = ({
 
           .registrants-data-table th:nth-child(10),
           .registrants-data-table td:nth-child(10) {
-            width: 13%;
+            width: 7%;
+          }
+
+          .registrants-data-table th:nth-child(11),
+          .registrants-data-table td:nth-child(11) {
+            width: 12%;
           }
 
           .registrants-data-table thead {
@@ -161,7 +196,7 @@ const RegistrantsTable = ({
             letter-spacing: 0.02em;
           }
 
-          .registrants-data-table-status.paid {
+          .registrants-data-table-status.completed {
             background-color: transparent;
             color: var(--u-color-success-foreground, #2e7d32);
           }
@@ -171,22 +206,12 @@ const RegistrantsTable = ({
             color: var(--u-color-base-foreground, #36485c);
           }
 
-          .registrants-data-table-status.refunded {
-            background-color: var(--u-color-alert-background, #fef0ee);
-            color: var(--u-color-alert-foreground, #bb1700);
-          }
-
-          .registrants-data-table-status.partially-refunded {
-            background-color: var(--u-color-alert-background, #fef0ee);
-            color: var(--u-color-alert-foreground, #bb1700);
-          }
-
-          .registrants-data-table-status.cancelled {
-            background-color: var(--u-color-alert-background, #fef0ee);
-            color: var(--u-color-alert-foreground, #bb1700);
-          }
-
           .registrants-data-table-status.overdue {
+            background-color: var(--u-color-alert-background, #fef0ee);
+            color: var(--u-color-alert-foreground, #bb1700);
+          }
+
+          .registrants-data-table-status.canceled {
             background-color: var(--u-color-alert-background, #fef0ee);
             color: var(--u-color-alert-foreground, #bb1700);
           }
@@ -224,12 +249,13 @@ const RegistrantsTable = ({
           <thead>
             <tr>
               <th>Athlete</th>
+              <th>Date of Birth</th>
               <th>Gender</th>
               <th>Primary Contact</th>
-              <th>Registration</th>
+              {!hideRegistrationColumn && <th>Registration</th>}
               <th>Team</th>
               <th>Registration Date</th>
-              <th className="align-right">Total Paid to Date</th>
+              <th className="align-right">Paid to Date</th>
               <th className="align-right">Refunded</th>
               <th className="align-right">Outstanding</th>
               <th>Status</th>
@@ -237,32 +263,37 @@ const RegistrantsTable = ({
           </thead>
           <tbody>
             {registrants.length > 0 ? (
-              registrants.map((registrant, index) => (
+              registrants.map((registrant, index) => {
+                const accountStatus = getAccountStatus(registrant.status);
+                // Only render row if status is displayable
+                return accountStatus ? (
                 <tr key={index} onClick={() => onRegistrantClick(registrant)}>
                   <td className="athlete-name">{registrant.athlete}</td>
+                  <td>{registrant.dob}</td>
                   <td>{registrant.gender}</td>
                   <td>{registrant.primaryContact}</td>
-                  <td>{registrant.registration}</td>
+                  {!hideRegistrationColumn && <td>{registrant.registration}</td>}
                   <td>{registrant.team}</td>
                   <td>{registrant.registrationDate}</td>
                   <td className="align-right">{registrant.totalPaid}</td>
                   <td className="align-right refunded-column">{formatRefund(registrant.refunded)}</td>
                   <td className="align-right">{registrant.outstanding}</td>
                   <td>
-                    <span className={`registrants-data-table-status ${registrant.status.toLowerCase().replace(/ /g, '-')}`}>
+                    <span className={`registrants-data-table-status ${getStatusClass(registrant.status)}`}>
                       {registrant.status === 'Paid' && (
                         <svg className="registrants-data-table-status-icon" viewBox="0 0 12 12" fill="none">
                           <path d="M2 6L5 9L10 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
                       )}
-                      {registrant.status}
+                      {accountStatus}
                     </span>
                   </td>
                 </tr>
-              ))
+                ) : null;
+              })
             ) : (
               <tr>
-                <td colSpan="10" style={{ padding: 0, border: 'none' }}>
+                <td colSpan={hideRegistrationColumn ? 10 : 11} style={{ padding: 0, border: 'none' }}>
                   <div className="registrants-data-table-empty-state">
                     <h3 className="registrants-data-table-empty-title">No registrants found</h3>
                     <p className="registrants-data-table-empty-description">

@@ -35,7 +35,7 @@ const BaseModal = ({ title, onClose, children, maxWidth = '520px' }) => {
           .base-modal-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            // align-items: center;
           }
 
           .base-modal-title {

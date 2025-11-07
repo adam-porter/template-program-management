@@ -140,10 +140,11 @@ const TableToolbar = ({
                 onChange={(e) => onFilterChange(e.target.value)}
               >
                 <option value="All">All</option>
-                <option value="Current">Current</option>
                 <option value="Overdue">Overdue</option>
+                <option value="Current">Current</option>
+                <option value="Completed">Completed</option>
                 <option value="Refunded">Refunded</option>
-                <option value="Cancelled">Cancelled</option>
+                <option value="Canceled">Canceled</option>
               </select>
             </div>
           )}

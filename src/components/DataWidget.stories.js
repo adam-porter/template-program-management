@@ -182,7 +182,7 @@ export const DashboardLayout = {
         rows={[
           { label: "Upcoming", value: "8", hasButton: true },
           { label: "Completed", value: "16", hasButton: true },
-          { label: "Cancelled", value: "2", hasButton: true },
+          { label: "Canceled", value: "2", hasButton: true },
           { label: "This Week", value: "3", hasButton: false },
           { label: "Total", value: "24", hasButton: false }
         ]}
