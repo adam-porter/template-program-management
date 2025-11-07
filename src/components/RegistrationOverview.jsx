@@ -134,8 +134,7 @@ const RegistrationOverview = ({
       labelTooltip: "Total number of registered athletes",
       rows: [
         { label: "Overdue", value: "0", hasButton: false, showCopyButton: false },
-        { label: "Overdue Amount", value: "$0.00", hasButton: false, showCopyButton: false },
-        { label: "Canceled", value: registrantsWithOverdue.filter(r => r.status === 'Canceled').length.toString(), hasButton: false, showCopyButton: false }
+        { label: "Overdue Amount", value: "$0.00", hasButton: false, showCopyButton: false }
       ]
     },
     {

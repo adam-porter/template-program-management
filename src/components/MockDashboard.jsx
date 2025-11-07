@@ -36,8 +36,7 @@ const MockDashboard = () => {
         labelTooltip: "Total number of registered athletes",
         rows: [
           { label: "Overdue", value: "0", hasButton: false, showCopyButton: false },
-          { label: "Overdue Amount", value: "$0.00", hasButton: false, showCopyButton: false },
-          { label: "Canceled", value: "0", hasButton: false, showCopyButton: false }
+          { label: "Overdue Amount", value: "$0.00", hasButton: false, showCopyButton: false }
         ]
       },
       {
