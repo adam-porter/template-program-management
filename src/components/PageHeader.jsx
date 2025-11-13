@@ -163,8 +163,8 @@ const PageHeader = ({
             justify-content: center;
             min-height: 50px;
             padding: var(--u-space-one, 16px);
-            font-family: var(--u-font-body);
-            font-weight: var(--u-font-weight-bold);
+            font-family: 'Barlow', sans-serif;
+            font-weight: 700;
             font-size: var(--u-font-size-default, 16px);
             cursor: pointer;
           }
@@ -458,11 +458,11 @@ const PageHeader = ({
           gap: 'var(--u-space-quarter, 4px)',
           flex: '1'
         }}>
-          <h1 style={{ 
-            fontSize: 'var(--u-font-size-title-xxlarge, 32px)', 
-            margin: '0', 
-            fontWeight: 'var(--u-font-weight-bold)',
-            fontFamily: 'var(--u-font-body)',
+          <h1 style={{
+            fontSize: 'var(--u-font-size-title-xxlarge, 32px)',
+            margin: '0',
+            fontWeight: '700',
+            fontFamily: "'Barlow', sans-serif",
             color: 'var(--u-color-base-foreground-contrast, #071c31)',
             letterSpacing: '0.25px',
             lineHeight: '1.2'

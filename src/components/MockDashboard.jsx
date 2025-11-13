@@ -36,7 +36,8 @@ const MockDashboard = () => {
         labelTooltip: "Total number of registered athletes",
         rows: [
           { label: "Overdue", value: "0", hasButton: false, showCopyButton: false },
-          { label: "Overdue Amount", value: "$0.00", hasButton: false, showCopyButton: false }
+          { label: "Overdue Amount", value: "$0.00", hasButton: false, showCopyButton: false },
+          { label: "Canceled", value: "0", hasButton: false, showCopyButton: false }
         ]
       },
       {
@@ -1281,8 +1282,8 @@ const MockDashboard = () => {
 
   const updatedWidgets = initialMockData.widgets.map(widget => {
     if (widget.label === "Registrants") {
-      // Calculate cancelled registrants count for "Canceled" row
-      const cancelledCount = currentRegistrants.filter(registrant => registrant.status === 'Canceled').length;
+      // Calculate cancelled payment plans count for "Canceled" row
+      const cancelledCount = currentRegistrants.filter(registrant => registrant.paymentPlanStatus === 'Canceled').length;
       console.log('Registrants widget - cancelled count:', cancelledCount);
       
       return {
@@ -1520,21 +1521,24 @@ const MockDashboard = () => {
   };
 
   // Edit Payment handler - updates the scheduled date of a payment
-  const handleEditPayment = ({ payment, date, originalDate, note }) => {
-    // Update registrants data to change the payment date
-    const updatedRegistrants = currentRegistrants.map(registrant => {
-      // Find if this registrant has the payment
-      const paymentIndex = registrant.payments.findIndex(p => 
-        p.description === payment.description && 
-        p.date === originalDate && 
+  const handleEditPayment = ({ payment, date, originalDate, note, registrant }) => {
+    // Update registrants data to change the payment date for only the specific registrant
+    const updatedRegistrants = currentRegistrants.map(r => {
+      // Only update if this is the specific registrant we're editing
+      if (r.orderId !== registrant.orderId) return r;
+
+      // Find the payment in this registrant
+      const paymentIndex = r.payments.findIndex(p =>
+        p.description === payment.description &&
+        p.date === originalDate &&
         p.transactionId === payment.transactionId &&
         p.status === 'Scheduled'
       );
-      
-      if (paymentIndex === -1) return registrant;
-      
+
+      if (paymentIndex === -1) return r;
+
       // Update the payment date and store modification metadata
-      const updatedPayments = [...registrant.payments];
+      const updatedPayments = [...r.payments];
       const currentPayment = updatedPayments[paymentIndex];
       updatedPayments[paymentIndex] = {
         ...currentPayment,
@@ -1544,13 +1548,13 @@ const MockDashboard = () => {
         modifiedNote: note || undefined, // Store the note if provided
         isModified: true // Flag to indicate this payment was modified
       };
-      
+
       return {
-        ...registrant,
+        ...r,
         payments: updatedPayments
       };
     });
-    
+
     setRegistrantsData(updatedRegistrants);
   };
 
@@ -1761,7 +1765,7 @@ const MockDashboard = () => {
           }
         `}
       </style>
-      <div style={{ fontFamily: 'Arial, sans-serif', backgroundColor: 'white', minHeight: '100vh' }}>
+      <div style={{ backgroundColor: 'white', minHeight: '100vh' }}>
         {/* Main Content Area */}
         <main className="mock-dashboard-main">
         {/* Page Header */}

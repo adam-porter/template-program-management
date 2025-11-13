@@ -124,6 +124,9 @@ const RegistrationOverview = ({
   });
 
   // Build widgets using widgetData if provided
+  // Calculate cancelled payment plans count
+  const cancelledPaymentPlansCount = registrants.filter(r => r.paymentPlanStatus === 'Canceled').length;
+
   const displayWidgets = widgetData ? [
     {
       label: "Registrants",
@@ -134,7 +137,8 @@ const RegistrationOverview = ({
       labelTooltip: "Total number of registered athletes",
       rows: [
         { label: "Overdue", value: "0", hasButton: false, showCopyButton: false },
-        { label: "Overdue Amount", value: "$0.00", hasButton: false, showCopyButton: false }
+        { label: "Overdue Amount", value: "$0.00", hasButton: false, showCopyButton: false },
+        { label: "Canceled", value: cancelledPaymentPlansCount.toString(), hasButton: false, showCopyButton: false }
       ]
     },
     {
@@ -183,7 +187,7 @@ const RegistrationOverview = ({
           }
         `}
       </style>
-      <div style={{ fontFamily: 'Arial, sans-serif', backgroundColor: 'white', minHeight: '100vh' }}>
+      <div style={{ backgroundColor: 'white', minHeight: '100vh' }}>
         <main className="registration-overview-main">
           {/* Page Header */}
           <PageHeader

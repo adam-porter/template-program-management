@@ -89,7 +89,7 @@ const RegistrantDetails = ({
   };
 
   const handleEditSubmit = (updateData) => {
-    onEditPayment(updateData);
+    onEditPayment({ ...updateData, registrant });
   };
 
   const handlePaymentPlanMenuToggle = () => {
@@ -503,11 +503,10 @@ const RegistrantDetails = ({
               label="Registrant"
               value={registrant.athlete}
               size="small"
-              subheader={`${registrant.dob} · ${registrant.gender}`}
               rows={[
                 { label: "Primary Contact", value: registrant.primaryContact },
-                { 
-                  label: "Primary Contact Email", 
+                {
+                  label: "Primary Contact Email",
                   value: registrant.email,
                   showCopyButton: true
                 },
@@ -516,19 +515,11 @@ const RegistrantDetails = ({
             />
             
             <DataWidget
-              label="Total Registrant Value"
-              value={(() => {
-                // Calculate gross value: Total Paid to Date + Outstanding
-                const totalPaid = parseFloat(registrant.totalPaid.replace(/[$,]/g, ''));
-                const outstanding = parseFloat(registrant.outstanding.replace(/[$,]/g, ''));
-                const grossValue = totalPaid + outstanding;
-                return `$${grossValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-              })()}
+              label="Paid to Date"
+              value={registrant.totalPaid}
               size="small"
-              subheader={`List Price: ${registrant.listPrice}`}
-              labelTooltip="Sum of paid to date and outstanding"
               rows={[
-                { label: "Paid to Date", value: registrant.totalPaid },
+                { label: "List Price", value: registrant.listPrice },
                 { label: "Outstanding", value: registrant.outstanding },
                 { label: "Refunded", value: registrant.refunded }
               ]}

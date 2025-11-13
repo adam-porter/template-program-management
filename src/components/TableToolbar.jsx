@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import UniformButton from './UniformButton';
 import { IconDownload } from './UniformIcons';
 
@@ -18,6 +18,17 @@ const TableToolbar = ({
   showDownload = true,
   actionButton = null
 }) => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 767);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 767);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <>
       <style>
@@ -25,7 +36,7 @@ const TableToolbar = ({
           .table-toolbar {
             display: flex;
             gap: var(--u-space-one-half, 24px);
-            align-items: center;
+            align-items: flex-end;
             width: 100%;
           }
 
@@ -115,6 +126,10 @@ const TableToolbar = ({
               align-items: flex-start;
             }
 
+            .table-toolbar-left {
+              width: 100%;
+            }
+
             .table-toolbar-filter {
               width: 100%;
             }
@@ -180,7 +195,7 @@ const TableToolbar = ({
               icon={<IconDownload />}
               onClick={onDownload}
             >
-              Download
+              {!isMobile && 'Download'}
             </UniformButton>
           ) : null}
         </div>

@@ -181,11 +181,8 @@ const DataWidget = ({
             color: var(--u-color-base-foreground-contrast, #071c31);
             letter-spacing: var(--u-letter-spacing-default, 0px);
             margin: 0;
-            min-width: 100%;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            width: min-content;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
           }
 
           .data-widget-subheader {
