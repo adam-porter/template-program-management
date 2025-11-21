@@ -520,7 +520,7 @@ const RegistrantDetails = ({
               size="small"
               rows={[
                 { label: "List Price", value: registrant.listPrice },
-                { label: "Outstanding", value: registrant.outstanding },
+                { label: "Outstanding", value: registrant.outstanding, labelTooltip: registrant.outstandingReason === 'canceled' ? 'Payment Plan Canceled' : undefined },
                 { label: "Refunded", value: registrant.refunded }
               ]}
             />

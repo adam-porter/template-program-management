@@ -33,11 +33,10 @@ const MockDashboard = () => {
         size: "medium",
         avatar: null,
         subheader: null,
-        labelTooltip: "Total number of registered athletes",
         rows: [
           { label: "Overdue", value: "0", hasButton: false, showCopyButton: false },
           { label: "Overdue Amount", value: "$0.00", hasButton: false, showCopyButton: false },
-          { label: "Canceled", value: "0", hasButton: false, showCopyButton: false }
+          { label: "Completed", value: "0", hasButton: false, showCopyButton: false, labelTooltip: "Number of registrants with no remaining balance" }
         ]
       },
       {
@@ -1282,18 +1281,18 @@ const MockDashboard = () => {
 
   const updatedWidgets = initialMockData.widgets.map(widget => {
     if (widget.label === "Registrants") {
-      // Calculate cancelled payment plans count for "Canceled" row
-      const cancelledCount = currentRegistrants.filter(registrant => registrant.paymentPlanStatus === 'Canceled').length;
-      console.log('Registrants widget - cancelled count:', cancelledCount);
-      
+      // Calculate completed registrants count (those with zero outstanding balance)
+      const completedCount = currentRegistrants.filter(registrant => registrant.outstanding === "$0.00").length;
+      console.log('Registrants widget - completed count:', completedCount);
+
       return {
         ...widget,
         value: programWidgetData.count.toString(),
         rows: widget.rows.map(row => {
-          if (row.label === "Canceled") {
+          if (row.label === "Completed") {
             return {
               ...row,
-              value: cancelledCount.toString()
+              value: completedCount.toString()
             };
           }
           return row;
@@ -1301,13 +1300,14 @@ const MockDashboard = () => {
       };
     }
     if (widget.label === "Total Fees") {
-      // Gross value = Total Paid to Date + Outstanding
-      const grossValue = programWidgetData.totalPaid + programWidgetData.totalOutstanding;
+      // Accrual accounting: Paid to Date + Outstanding - Refunded
+      const grossValue = programWidgetData.totalPaid + programWidgetData.totalOutstanding - programWidgetData.totalRefunded;
 
       return {
         ...widget,
         label: "Total Program Value",
         value: `$${grossValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+        labelTooltip: "Sum of paid to date and outstanding less refunds",
         rows: [
           { label: "Paid to Date", value: `$${programWidgetData.totalPaid.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, hasButton: false, showCopyButton: false },
           { label: "Outstanding", value: `$${programWidgetData.totalOutstanding.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, hasButton: false, showCopyButton: false },
@@ -1513,7 +1513,8 @@ const MockDashboard = () => {
         payments: updatedPayments,
         outstanding: `$${newOutstanding.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
         status: registrantStatus,
-        paymentPlanStatus: 'Canceled'
+        paymentPlanStatus: 'Canceled',
+        outstandingReason: newOutstanding === 0 ? 'canceled' : null
       };
     });
     

@@ -1,4 +1,5 @@
 import React from 'react';
+import { IconInformation } from './UniformIcons';
 
 /**
  * RegistrantsTable Component - Displays registrant data with athlete details
@@ -59,7 +60,7 @@ const RegistrantsTable = ({
           .registrants-data-table-container {
             width: 100%;
             background-color: var(--u-color-background-container, #fefefe);
-            overflow: hidden;
+            overflow: visible;
           }
 
           .registrants-data-table {
@@ -242,6 +243,60 @@ const RegistrantsTable = ({
             color: var(--u-color-base-foreground, #36485c);
             margin: 0;
           }
+
+          .registrants-data-table td {
+            overflow: visible;
+          }
+
+          .outstanding-icon-wrapper {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: help;
+            width: 16px;
+            height: 16px;
+            color: #36485c;
+            flex-shrink: 0;
+            position: relative;
+            margin-left: 4px;
+          }
+
+          .outstanding-icon-wrapper:hover .outstanding-tooltip {
+            opacity: 1;
+            visibility: visible;
+          }
+
+          .outstanding-tooltip {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-bottom: 8px;
+            padding: 8px 12px;
+            background-color: #071c31;
+            color: #fefefe;
+            font-family: var(--u-font-body);
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 1.4;
+            border-radius: 2px;
+            white-space: nowrap;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            z-index: 10000;
+            pointer-events: none;
+          }
+
+          .outstanding-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 4px solid transparent;
+            border-top-color: #071c31;
+          }
         `}
       </style>
       <div className="registrants-data-table-container">
@@ -277,7 +332,19 @@ const RegistrantsTable = ({
                   <td>{registrant.registrationDate}</td>
                   <td className="align-right">{registrant.totalPaid}</td>
                   <td className="align-right refunded-column">{formatRefund(registrant.refunded)}</td>
-                  <td className="align-right">{registrant.outstanding}</td>
+                  <td className="align-right">
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '4px', position: 'relative' }}>
+                      {registrant.outstandingReason === 'canceled' && (
+                        <div className="outstanding-icon-wrapper">
+                          <IconInformation />
+                          <div className="outstanding-tooltip">
+                            Payment Plan Canceled
+                          </div>
+                        </div>
+                      )}
+                      <span>{registrant.outstanding}</span>
+                    </div>
+                  </td>
                   <td>
                     <span className={`registrants-data-table-status ${getStatusClass(registrant.status)}`}>
                       {registrant.status === 'Paid' && (

@@ -144,6 +144,55 @@ const DataWidget = ({
             border-top-color: var(--u-color-base-foreground-contrast, #071c31);
           }
 
+          .data-widget-row-tooltip-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: help;
+            width: 16px;
+            height: 16px;
+            color: var(--u-color-base-foreground, #36485c);
+            flex-shrink: 0;
+            position: relative;
+            margin-left: 4px;
+          }
+
+          .data-widget-row-tooltip-icon:hover .data-widget-row-tooltip {
+            visibility: visible;
+            opacity: 1;
+          }
+
+          .data-widget-row-tooltip {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-bottom: 8px;
+            padding: 8px 12px;
+            background-color: var(--u-color-base-foreground-contrast, #071c31);
+            color: var(--u-color-emphasis-foreground-reversed, #fefefe);
+            font-family: var(--u-font-body);
+            font-size: var(--u-font-size-micro, 12px);
+            font-weight: var(--u-font-weight-medium, 500);
+            line-height: 1.4;
+            border-radius: var(--u-border-radius-small, 2px);
+            white-space: nowrap;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            z-index: 1000;
+          }
+
+          .data-widget-row-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 4px solid transparent;
+            border-top-color: var(--u-color-base-foreground-contrast, #071c31);
+          }
+
           .data-widget-detail {
             display: flex;
             flex-direction: column;
@@ -307,7 +356,17 @@ const DataWidget = ({
             <div className="data-widget-summaries">
               {rows.map((row, index) => (
                   <div key={index} className="data-widget-row">
-                  <p className="data-widget-row-label">{row.label}</p>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <p className="data-widget-row-label">{row.label}</p>
+                    {row.labelTooltip && (
+                      <div className="data-widget-row-tooltip-icon">
+                        <IconInformation />
+                        <div className="data-widget-row-tooltip">
+                          {row.labelTooltip}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                   <div className="data-widget-row-value-container">
                     {row.hasButton && (
                       <UniformButton

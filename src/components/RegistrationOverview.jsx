@@ -124,8 +124,8 @@ const RegistrationOverview = ({
   });
 
   // Build widgets using widgetData if provided
-  // Calculate cancelled payment plans count
-  const cancelledPaymentPlansCount = registrants.filter(r => r.paymentPlanStatus === 'Canceled').length;
+  // Calculate completed registrants count (those with zero outstanding balance)
+  const cancelledPaymentPlansCount = registrants.filter(r => r.outstanding === "$0.00").length;
 
   const displayWidgets = widgetData ? [
     {
@@ -134,21 +134,20 @@ const RegistrationOverview = ({
       size: "medium",
       avatar: null,
       subheader: null,
-      labelTooltip: "Total number of registered athletes",
       rows: [
         { label: "Overdue", value: "0", hasButton: false, showCopyButton: false },
         { label: "Overdue Amount", value: "$0.00", hasButton: false, showCopyButton: false },
-        { label: "Canceled", value: cancelledPaymentPlansCount.toString(), hasButton: false, showCopyButton: false }
+        { label: "Completed", value: cancelledPaymentPlansCount.toString(), hasButton: false, showCopyButton: false, labelTooltip: "Number of registrants with no remaining balance" }
       ]
     },
     {
       label: "Total Registration Value",
-      // Gross value = Total Paid to Date + Outstanding
-      value: `$${(widgetData.totalPaid + widgetData.totalOutstanding).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+      // Accrual accounting: Paid to Date + Outstanding - Refunded
+      value: `$${(widgetData.totalPaid + widgetData.totalOutstanding - widgetData.totalRefunded).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
       size: "medium",
       avatar: null,
       subheader: null,
-      labelTooltip: "Sum of paid to date and outstanding",
+      labelTooltip: "Sum of paid to date and outstanding less refunds",
       rows: [
         { label: "Paid to Date", value: `$${widgetData.totalPaid.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, hasButton: false, showCopyButton: false },
         { label: "Outstanding", value: `$${widgetData.totalOutstanding.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, hasButton: false, showCopyButton: false },
